@@ -10,15 +10,21 @@
   </div>  
     <div class="login-form-container">
         <h1>Iniciar sesión</h1>
-        <div class="form-login" fxLayout="column">
-            <mat-label>Correo electrónico</mat-label>
-            <mat-form-field >
-                <input matInput placeholder="Introduzca su correo electronico" required>
-            </mat-form-field>
-            <mat-label>Contraseña</mat-label>
-            <mat-form-field >
-                <input matInput placeholder="Introduzca su contraseña" required>
-            </mat-form-field>
+        <div class="form-login" fxLayout="column" fxLayoutGap="20px">
+            <div fxLayout="column">
+                <mat-label>Correo electrónico</mat-label>
+                <mat-form-field >
+                    <input matInput placeholder="Introduce tu correo electronico" required>
+                </mat-form-field>
+            </div>
+            <div fxLayout="column">
+                <mat-label>Contraseña</mat-label>
+                <mat-form-field >
+                    <input matInput placeholder="Introduce tu contraseña" required>
+                </mat-form-field>
+                <div fxLayoutAlign="end" class="forgot-password-container"><p>¿Olvidaste tu contraseña?</p></div>
+            </div>
+            <button class="primary-button">Iniciar sesión</button>
         </div>
     </div>
 </div>

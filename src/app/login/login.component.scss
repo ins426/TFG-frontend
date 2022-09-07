@@ -47,6 +47,35 @@ h1{
       height: 50px;
       border-radius: 85px;
       border-style: solid;
+      padding-left: 17px;
     }
+  }
+}
+
+button{
+  width: 430px;
+  height: 50px;
+  border-radius: 85px;
+  background-color: #009FB7;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover {
+  background-color: #007880;
+  transition: .2s;
+}
+
+.forgot-password-container{
+  font-size: 15px;
+  color: #009FB7;
+  cursor:pointer;
+}
+
+.forgot-password-container:hover{
+  p{
+    color: #007880;
+    transition: .2s;
   }
 }
