@@ -1,14 +1,24 @@
-<div class="login-container" fxLayout="row">
-  <div class="image-container" fxLayout="column" fxLayoutAlign="_ center" fxLayoutGap="60px">
+<div class="login-container" fxLayout="row" fxLayoutGap="228px">
+  <div class="image-container" fxLayout="column" fxLayoutAlign="_ center" fxLayoutGap="45px">
       <div>
           <img class="logo-image" src="assets/images/logo.png">
       </div>
       <div fxLayoutAlign="center" fxLayout="column" class="welcome-container">
           <h2>Bienvenido</h2>
-          <p>Tu agenda finalmente en la nube</p>
+          <p>Agenda online para clínicas</p>
       </div>
   </div>  
     <div class="login-form-container">
         <h1>Iniciar sesión</h1>
+        <div class="form-login" fxLayout="column">
+            <mat-label>Correo electrónico</mat-label>
+            <mat-form-field >
+                <input matInput placeholder="Introduzca su correo electronico" required>
+            </mat-form-field>
+            <mat-label>Contraseña</mat-label>
+            <mat-form-field >
+                <input matInput placeholder="Introduzca su contraseña" required>
+            </mat-form-field>
+        </div>
     </div>
 </div>

@@ -3,8 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import {FormsModule} from "@angular/forms";
 import {FlexModule} from "@angular/flex-layout";
+import { LoginComponent } from './login/login.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import {FlexModule} from "@angular/flex-layout";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FlexModule
+    FlexModule,
+    FormsModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]
