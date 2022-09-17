@@ -1,6 +1,5 @@
 .image-container{
   width: 650px;
-  height: 755px;
   background-image: url("/assets/images/login-image.jpg");
   background-size: 100% 100%;
 }
@@ -42,14 +41,20 @@ h1{
   }
 
   mat-form-field{
-    input{
-      width: 400px;
-      height: 50px;
-      border-radius: 85px;
-      border-style: solid;
-      padding-left: 17px;
-    }
+
   }
+}
+
+input{
+  width: 400px;
+  height: 50px;
+  border-radius: 85px;
+  border-style: solid;
+  padding-left: 17px;
+}
+
+.input-container{
+  margin-bottom: 20px;
 }
 
 button{
@@ -70,12 +75,16 @@ button:hover {
 .forgot-password-container{
   font-size: 15px;
   color: #009FB7;
-  cursor:pointer;
 }
 
 .forgot-password-container:hover{
-  p{
+  p:hover{
     color: #007880;
     transition: .2s;
+    cursor:pointer;
   }
+}
+
+.login-container{
+  height: 100%;
 }
