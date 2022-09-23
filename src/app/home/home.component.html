@@ -1,1 +1,24 @@
-<button (click)="sendSomething()">click</button>
+<div class="control-section">
+    <ejs-schedule #scheduleObj width='100%' height='550px' [selectedDate]="selectedDate" [eventSettings]="eventSettings"
+                   [showQuickInfo]="false" (popupOpen)="onPopupOpen($event)" (popupClose)="onPopupClose($event)"
+                  [views]="setViews" >
+        <ng-template #editorTemplate let-data>
+            <table *ngIf="data != undefined" class="custom-event-editor" width="100%" cellpadding="5">
+
+                        <ejs-datetimepicker id="StartTime" class="e-field" data-name="StartTime" format="M/dd/yy h:mm a"
+                                            [value]="startDateParser(data.startTime || data.StartTime)">
+                        </ejs-datetimepicker>
+
+                        <ejs-datetimepicker id="EndTime" class="e-field" data-name="EndTime" format="M/dd/yy h:mm a"
+                                             [value]="endDateParser(data.endTime || data.EndTime)">
+                        </ejs-datetimepicker>
+
+                <input id="Subject" [matAutocomplete]="autocomplete" name="Subject" class="e-field" [formControl]="control">
+                <mat-autocomplete #autocomplete="matAutocomplete" (optionSelected)="keyEvent($event)">
+                    <mat-option *ngFor="let patient of samplePatients" [value]="patient.name">{{ patient.name }}</mat-option>
+                </mat-autocomplete>
+
+            </table>
+        </ng-template>
+    </ejs-schedule>
+</div>

@@ -13,6 +13,13 @@ import {AuthGuard} from "./login/auth-guard";
 import {CookieService} from "ngx-cookie-service";
 import {AuthInterceptor} from "./login/auth.interceptor";
 import {MatInputModule} from "@angular/material/input";
+import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
+import {DropDownListModule} from '@syncfusion/ej2-angular-dropdowns'
+import {DateTimePickerModule} from '@syncfusion/ej2-angular-calendars'
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -28,7 +35,14 @@ import {MatInputModule} from "@angular/material/input";
         MatFormFieldModule,
         ReactiveFormsModule,
         HttpClientModule,
-        MatInputModule
+        MatInputModule,
+        ScheduleModule,
+        DateTimePickerModule,
+        DropDownListModule,
+        MatAutocompleteModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        BrowserAnimationsModule
     ],
   providers: [
       ActiveSessionGuard,
@@ -38,7 +52,8 @@ import {MatInputModule} from "@angular/material/input";
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+      MatDatepickerModule
   ],
   bootstrap: [AppComponent]
 })
