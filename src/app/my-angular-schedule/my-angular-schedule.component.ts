@@ -1,57 +1,23 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import { ScheduleComponent, View
-} from '@syncfusion/ej2-angular-schedule';
-import {L10n} from '@syncfusion/ej2-base';
-import { loadCldr} from '@syncfusion/ej2-base';
-import { extend, isNullOrUndefined } from '@syncfusion/ej2-base';
-import { doctorsEventData } from '../data';
-import {
-   MonthService, DayService, WeekService,
-  WorkWeekService, EventSettingsModel, ResizeService, DragAndDropService, ActionEventArgs
-} from '@syncfusion/ej2-angular-schedule';
-import { ChangeEventArgs } from '@syncfusion/ej2-calendars';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {EventSettingsModel, ScheduleComponent, View} from "@syncfusion/ej2-angular-schedule";
 import {FormControl} from "@angular/forms";
-
-declare var require: any;
-
-loadCldr(
-    require('cldr-data/supplemental/numberingSystems.json'),
-    require('cldr-data/main/es/ca-gregorian.json'),
-    require('cldr-data/main/es/numbers.json'),
-    require('cldr-data/main/es/timeZoneNames.json')
-);
-
-L10n.load({
-  'es': {
-    schedule: {
-      newEvent: 'Añadir cita',
-      editEvent: 'Editar cita',
-      day: 'Hoy',
-      week: 'Semana',
-      month: 'Mes',
-      today: 'Hoy',
-      save: 'Guardar',
-      saveButton: 'Guardar',
-      cancelButton: 'Cancelar'
-    }
-  }
-});
+import {HttpClient} from "@angular/common/http";
+import {AppointmentService} from "../../services/appointment.service";
+import {isNullOrUndefined} from "@syncfusion/ej2-base";
+import {ChangeEventArgs} from "@syncfusion/ej2-calendars";
 
 @Component({
-  selector: 'app-home',
-  providers: [DayService, WeekService,MonthService],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-my-angular-schedule',
+  templateUrl: './my-angular-schedule.component.html',
+  styleUrls: ['./my-angular-schedule.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class MyAngularScheduleComponent implements OnInit {
 
-  @ViewChild('calendar') calendar: ScheduleComponent;
+  @ViewChild('calendar') calendar?: ScheduleComponent;
   public startDate: Date | undefined;
   public endDate: Date | undefined;
 
   public selectedDate: Date = new Date(2021, 1, 15);
-  public eventSettings: EventSettingsModel
 
   public setViews: View[] = ['Day', 'Month', 'Week']
 
@@ -65,18 +31,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
       'name':'Manolo'
     }
   ]
-  constructor(private http: HttpClient,) { }
+
+  public eventSettings?: EventSettingsModel
+
+  constructor(private http: HttpClient,
+              public appointmentService: AppointmentService) {
+
+  }
 
 
 
   ngOnInit(): void {
-    this.eventSettings = {
-      dataSource: extend([], doctorsEventData, undefined, true) as Record<string, any>[]};
-  }
+    this.appointmentService.getAppointments().subscribe((response: any) => {
+      let records: Record<string, any>[] = []
 
-
-  ngAfterViewInit(){
-
+      response.forEach((appointment:any) => records.push(appointment));
+      console.log(response)
+      this.eventSettings =  {dataSource:records }
+    })
   }
 
   // @ts-ignore
@@ -116,18 +88,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public onPopupOpen(args: { type: string; data: { Patient: any; }; }) {
+      console.log(args)
     if (args.type === 'Editor') {
       //Args data son los datos del evento
-      console.log(args.data)
       //this.control.setValue(args.data.Patient);
     }
   }
 
   public onPopupClose(args:any) {
+      console.log(args)
     if (args.type === 'Editor' && args.data) {
-      console.log(this.patient)
       //args.data.Patient = this.patient;
-      console.log(args.data)
     }
     this.startDate = undefined;
     this.endDate = undefined;
@@ -136,7 +107,4 @@ export class HomeComponent implements OnInit, AfterViewInit {
   keyEvent(mat:any) {
     this.patient = mat.option.value;
   }
-
-
-
 }

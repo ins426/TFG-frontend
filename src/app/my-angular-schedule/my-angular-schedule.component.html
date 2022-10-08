@@ -1,5 +1,5 @@
 <div class="control-section">
-    <ejs-schedule #scheduleObj width='100%' height='550px' [selectedDate]="selectedDate" [eventSettings]="eventSettings"
+    <ejs-schedule #scheduleObj width='100%'  locale="es" [selectedDate]="selectedDate" [eventSettings]="eventSettings"
                    [showQuickInfo]="false" (popupOpen)="onPopupOpen($event)" (popupClose)="onPopupClose($event)"
                   [views]="setViews" >
         <ng-template #editorTemplate let-data>
