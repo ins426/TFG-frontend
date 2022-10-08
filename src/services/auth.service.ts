@@ -15,7 +15,7 @@ export class AuthService{
     'id': -1
   })
 
-  public redirectUrl : string
+  public redirectUrl?: string
 
   constructor(
       private http: HttpClient,
@@ -25,7 +25,7 @@ export class AuthService{
   login(credentials: LoginUserInterface){
     this.http.post<UserProfile>('/api/login',credentials).subscribe(response => {
       localStorage.setItem('userData',JSON.stringify(response))
-      this.router.navigateByUrl(this.redirectUrl)
+      this.router.navigateByUrl(<string>this.redirectUrl)
       this.redirectUrl = ''
     })
   }

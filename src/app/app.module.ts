@@ -7,7 +7,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FlexModule} from "@angular/flex-layout";
 import { LoginComponent } from './login/login.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { HomeComponent } from './home/home.component';
 import {ActiveSessionGuard} from "./login/active-session-guard";
 import {AuthGuard} from "./login/auth-guard";
 import {CookieService} from "ngx-cookie-service";
@@ -20,12 +19,19 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarComponent } from './calendar/calendar.component';
+import { MainComponent } from './main/main.component';
+import { SideBarComponent } from '../shared-components/side-bar/side-bar.component';
+import { MyAngularScheduleComponent } from './my-angular-schedule/my-angular-schedule.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    CalendarComponent,
+    MainComponent,
+    SideBarComponent,
+    MyAngularScheduleComponent
   ],
     imports: [
         BrowserModule,
