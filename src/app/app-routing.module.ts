@@ -8,7 +8,7 @@ import {CalendarComponent} from "./calendar/calendar.component";
 
 const routes: Routes = [
     {
-    path: '',
+    path: ' ',
     component: MainComponent,
     canActivate: [AuthGuard],
     runGuardsAndResolvers: 'always',
