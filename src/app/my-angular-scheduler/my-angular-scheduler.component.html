@@ -1,7 +1,9 @@
 <div class="control-section">
-    <ejs-schedule #scheduleObj width='100%'  locale="es" [selectedDate]="selectedDate" [eventSettings]="eventSettings"
+    <ejs-schedule #scheduleObj width="100%" height="781.8px" [workDays]='workWeekDays' locale="es"
+                  [eventSettings]="eventSettings"
                    [showQuickInfo]="false" (popupOpen)="onPopupOpen($event)" (popupClose)="onPopupClose($event)"
-                  [views]="setViews" >
+                  [views]="setViews" [currentView]="setViews[2]" startHour='10:00' endHour='20:00'
+                  [selectedDate]="myselectedDate" (cellClick)="onCellClick($event)" (dragStart) = "onDragStart($event)">
         <ng-template #editorTemplate let-data>
             <table *ngIf="data != undefined" class="custom-event-editor" width="100%" cellpadding="5">
 

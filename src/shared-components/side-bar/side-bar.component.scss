@@ -53,6 +53,10 @@
   border-radius: 5px;
 }
 
+.selected:hover {
+ background-color: rgba(105, 103, 115, 1);
+}
+
 .bottom-sidebar-wrapper{
   flex-grow:1;
   width: 100%;

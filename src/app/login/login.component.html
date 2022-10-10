@@ -1,1 +1,32 @@
-<app-my-angular-schedule></app-my-angular-schedule>
+<div class="login-container" fxLayout="row" fxLayoutGap="228px">
+    <div class="image-container" fxLayout="column" fxLayoutAlign="_ center" fxLayoutGap="45px">
+        <div>
+            <img class="logo-image" src="assets/images/logo.png">
+        </div>
+        <div fxLayoutAlign="center" fxLayout="column" class="welcome-container">
+            <h2>Bienvenido</h2>
+            <p>Agenda online para clínicas</p>
+        </div>
+    </div>
+    <div class="login-form-container">
+        <h1>Iniciar sesión</h1>
+        <div class="form-login" fxLayout="column">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div fxLayoutGap="50px" >
+                    <div fxLayout="column" class="input-container">
+                        <mat-label>Correo electrónico</mat-label>
+                        <input formControlName="email"
+                               placeholder="Introduce tu correo electronico" required email/>
+                    </div>
+                    <div fxLayout="column">
+                        <mat-label>Contraseña</mat-label>
+                        <input formControlName="password" type="password"
+                               placeholder="Introduce tu contraseña" required>
+                        <div fxLayoutAlign="end" class="forgot-password-container"><p>¿Olvidaste tu contraseña?</p></div>
+                    </div>
+                </div>
+                <button class="primary-button" type="submit">Iniciar sesión</button>
+            </form>
+        </div>
+    </div>
+</div>
