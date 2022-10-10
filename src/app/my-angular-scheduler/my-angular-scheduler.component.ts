@@ -1,25 +1,61 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {EventSettingsModel, ScheduleComponent, View} from "@syncfusion/ej2-angular-schedule";
-import {FormControl} from "@angular/forms";
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {
+  CellClickEventArgs, DragEventArgs,
+  ScheduleComponent, View, WorkHoursModel
+} from '@syncfusion/ej2-angular-schedule';
+import {L10n} from '@syncfusion/ej2-base';
+import { loadCldr} from '@syncfusion/ej2-base';
+import { isNullOrUndefined } from '@syncfusion/ej2-base';
+import { doctorsEventData } from '../data';
+import {MonthService, DayService, WeekService, EventSettingsModel, WorkWeekService,
+DragAndDropService} from '@syncfusion/ej2-angular-schedule';
+import { ChangeEventArgs } from '@syncfusion/ej2-calendars';
+import {FormControl} from "@angular/forms";
 import {AppointmentService} from "../../services/appointment.service";
-import {isNullOrUndefined} from "@syncfusion/ej2-base";
-import {ChangeEventArgs} from "@syncfusion/ej2-calendars";
+
+declare var require: any;
+
+loadCldr(
+    require('cldr-data/supplemental/numberingSystems.json'),
+    require('cldr-data/main/es/ca-gregorian.json'),
+    require('cldr-data/main/es/numbers.json'),
+    require('cldr-data/main/es/timeZoneNames.json')
+);
+
+L10n.load({
+  'es': {
+    schedule: {
+      newEvent: 'Añadir cita',
+      editEvent: 'Editar cita',
+      day: 'Hoy',
+      workWeek: 'Semana',
+      month: 'Mes',
+      today: 'Hoy',
+      save: 'Guardar',
+      saveButton: 'Guardar',
+      cancelButton: 'Cancelar'
+    }
+  }
+});
 
 @Component({
-  selector: 'app-my-angular-schedule',
-  templateUrl: './my-angular-schedule.component.html',
-  styleUrls: ['./my-angular-schedule.component.scss']
+  selector: 'app-my-angular-scheduler',
+  providers: [DayService, WeekService,MonthService, WorkWeekService, DragAndDropService],
+  templateUrl: './my-angular-scheduler.component.html',
+  styleUrls: ['./my-angular-scheduler.component.scss']
 })
-export class MyAngularScheduleComponent implements OnInit {
+export class MyAngularSchedulerComponent implements OnInit {
+  public workWeekDays: number[] = [1, 2,3,4,5,6,7];
 
-  @ViewChild('calendar') calendar?: ScheduleComponent;
+  public myselectedDate:Date = new Date(Date.now())
+
+  @ViewChild('scheduleObj') calendar!: ScheduleComponent;
+
   public startDate: Date | undefined;
   public endDate: Date | undefined;
 
-  public selectedDate: Date = new Date(2021, 1, 15);
-
-  public setViews: View[] = ['Day', 'Month', 'Week']
+  public setViews: View[] = ['Day', 'Month', 'WorkWeek']
 
   public control = new FormControl('');
   public patient: string = '';
@@ -107,4 +143,13 @@ export class MyAngularScheduleComponent implements OnInit {
   keyEvent(mat:any) {
     this.patient = mat.option.value;
   }
+
+  onCellClick(args: CellClickEventArgs): void {
+    this.calendar.openEditor(args, 'Add');
+    }
+
+  onDragStart(args: DragEventArgs): void {
+      args.interval = 10; // drag interval time is changed to 10 minutes
+  }
+
 }

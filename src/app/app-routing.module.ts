@@ -5,10 +5,11 @@ import {ActiveSessionGuard} from "./login/active-session-guard";
 import {AuthGuard} from "./login/auth-guard";
 import {MainComponent} from "./main/main.component";
 import {CalendarComponent} from "./calendar/calendar.component";
+import {MyAngularSchedulerComponent} from "./my-angular-scheduler/my-angular-scheduler.component";
 
 const routes: Routes = [
     {
-    path: ' ',
+    path: '',
     component: MainComponent,
     canActivate: [AuthGuard],
     runGuardsAndResolvers: 'always',
@@ -17,7 +18,7 @@ const routes: Routes = [
         {
           path:'calendario',
           component: CalendarComponent
-        }
+        },
       ]
   },
   {

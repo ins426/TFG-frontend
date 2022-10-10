@@ -22,7 +22,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './calendar/calendar.component';
 import { MainComponent } from './main/main.component';
 import { SideBarComponent } from '../shared-components/side-bar/side-bar.component';
-import { MyAngularScheduleComponent } from './my-angular-schedule/my-angular-schedule.component';
+import {MyAngularSchedulerComponent} from "./my-angular-scheduler/my-angular-scheduler.component";
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { MyAngularScheduleComponent } from './my-angular-schedule/my-angular-sch
     CalendarComponent,
     MainComponent,
     SideBarComponent,
-    MyAngularScheduleComponent
+      MyAngularSchedulerComponent
   ],
     imports: [
         BrowserModule,
@@ -48,7 +49,8 @@ import { MyAngularScheduleComponent } from './my-angular-schedule/my-angular-sch
         MatAutocompleteModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatSidenavModule
     ],
   providers: [
       ActiveSessionGuard,
