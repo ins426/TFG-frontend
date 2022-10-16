@@ -66,6 +66,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   public psychologistControl = new FormControl('')
   public startTimeControl = new FormControl('')
   public endTimeControl = new FormControl('')
+  public control = new FormControl('')
 
   public patient: string = '';
   public samplePatients = [
@@ -177,8 +178,28 @@ export class MyAngularSchedulerComponent implements OnInit{
 
   public onPopupClose(args:any) {
     if (args.type === 'Editor' && args.data) {
-      //args.data.Patient = this.patient;
+      args.data.Subject = this.displayFn(this.psychologistControl.value)
+      let startTime = new Date('2022-10-19')
+      let endTime = new Date('2022-10-19')
+
+      let time: string[]|undefined = []
+      time = this.startTimeControl.value?.split(':')
+      startTime.setHours(Number(time?.[0]),Number(time?.[1]))
+
+      time = this.endTimeControl.value?.split(':')
+      endTime.setHours(Number(time?.[0]),Number(time?.[1]))
+
+      args.data.StartTime = startTime
+      args.data.EndTime = endTime
+      console.log(args)
+      /**args.data.StartTime = new Date()
+      args.data.StartTime.setHours(10,0,0,0,0)
+      args.data.EndTime = new Date()
+      args.data.EndTime.setHours(11,0,0,0,0)
+      args.data.Subject = "ines"**/
+      //args.data.Patient = this.patient
     }
+    console.log(args)
     this.startDate = undefined;
     this.endDate = undefined;
   }
@@ -215,7 +236,7 @@ export class MyAngularSchedulerComponent implements OnInit{
     this.selectedEndTime = endTime
   }
 
-  displayFn(value?: number):string {
+  displayFn(value?: number | string | null):string {
 
     if(value){
       let name = this.psychologistList.find(psychologist => psychologist._id === value)!.name
@@ -229,6 +250,10 @@ export class MyAngularSchedulerComponent implements OnInit{
 
   display(date:Date|null){
     return date?.toLocaleTimeString()
+  }
+
+  toDate(time:string | number | Date):Date{
+    return new Date(time)
   }
 
 }
