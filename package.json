@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.1.0",
+    "@angular/cdk": "^14.2.0",
     "@angular/common": "^14.1.0",
     "@angular/compiler": "^14.1.0",
     "@angular/core": "^14.1.0",
@@ -26,6 +27,7 @@
     "@syncfusion/ej2-angular-schedule": "^20.2.45",
     "angular-cookies": "^1.8.3",
     "cldr-data": "^36.0.1",
+    "dcerialize": "^3.6.8",
     "ngx-cookie": "^6.0.1",
     "ngx-cookie-service": "^14.0.1",
     "roboto-fontface": "^0.10.0",

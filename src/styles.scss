@@ -25,4 +25,18 @@ html{
 
  .cdk-overlay-pane {
   position: fixed;
-  z-index: 9999;  }
+  z-index: 9999 !important;  }
+
+ .e-dlg-overlay { z-index:1000 !important; }
+div.e-dlg-container.e-dlg-center-center.e-schedule-dialog-container{z-index:1002 !important;}
+.cdk-overlay-container { z-index: 1004; }
+
+ /**
+ ::ng-deep{
+   .myPanelClass{
+    margin-top: 30px !important;
+}
+ }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }**/

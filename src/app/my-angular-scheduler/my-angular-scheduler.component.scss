@@ -47,7 +47,28 @@
     background-color: #E94F37;
   }
 
+
+  @media (max-width: 1280px){
+    .e-schedule .e-vertical-view .e-time-cells-wrap table td,
+    .e-schedule .e-vertical-view .e-work-cells {
+      height: 60px !important;
+
+    }
+  }
+
 }
 
+.control-section{
+  height: 100%;
+}
 
+.availableStartHours-container{
+  height: 100px;
+  overflow: scroll;
+}
+
+.availableEndHours-container{
+  height: 100px;
+  overflow: scroll;
+}
 

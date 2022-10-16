@@ -24,6 +24,8 @@ import { MainComponent } from './main/main.component';
 import { SideBarComponent } from '../shared-components/side-bar/side-bar.component';
 import {MyAngularSchedulerComponent} from "./my-angular-scheduler/my-angular-scheduler.component";
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSelectModule} from '@angular/material/select';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
         MatDatepickerModule,
         MatNativeDateModule,
         BrowserAnimationsModule,
-        MatSidenavModule
+        MatSidenavModule,
+        MatSelectModule,
+        MatChipsModule
     ],
   providers: [
       ActiveSessionGuard,
