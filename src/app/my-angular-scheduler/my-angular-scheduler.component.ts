@@ -1,22 +1,17 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {
   CellClickEventArgs, DragEventArgs,
-  ScheduleComponent, View, WorkHoursModel
+  ScheduleComponent, View
 } from '@syncfusion/ej2-angular-schedule';
 import {L10n} from '@syncfusion/ej2-base';
 import { loadCldr} from '@syncfusion/ej2-base';
-import { isNullOrUndefined } from '@syncfusion/ej2-base';
-import { doctorsEventData } from '../data';
 import {MonthService, DayService, WeekService, EventSettingsModel, WorkWeekService,
 DragAndDropService} from '@syncfusion/ej2-angular-schedule';
-import { ChangeEventArgs } from '@syncfusion/ej2-calendars';
 import {FormControl} from "@angular/forms";
 import {AppointmentService} from "../../services/appointment.service";
 import {UserService} from "../../services/user.service";
-import {PsychologistInterface} from "../../interfaces/user-interface";
-import {cookieServiceFactory} from "ngx-cookie";
-import {finalize, map, Observable, startWith, switchMap, tap} from "rxjs";
+import {Observable, startWith, switchMap} from "rxjs";
 import {User} from "../../models/user";
 
 declare var require: any;
@@ -51,10 +46,10 @@ L10n.load({
   styleUrls: ['./my-angular-scheduler.component.scss']
 })
 export class MyAngularSchedulerComponent implements OnInit{
-  public workWeekDays: number[] = [1, 2,3,4,5];
+  public workWeekDays: number[] = [1,2,3,4,5];
   today = new Date()
   public minDate = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
-  public myselectedDate:Date = new Date(Date.now())
+  public mySelectedDate:Date = new Date(Date.now())
 
   @ViewChild('scheduleObj') calendar!: ScheduleComponent;
 
@@ -66,17 +61,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   public psychologistControl = new FormControl('')
   public startTimeControl = new FormControl('')
   public endTimeControl = new FormControl('')
-  public control = new FormControl('')
 
-  public patient: string = '';
-  public samplePatients = [
-    {
-      'name':'Nancy'
-    },
-    {
-      'name':'Manolo'
-    }
-  ]
 
   public eventSettings?: EventSettingsModel
 
@@ -90,8 +75,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   selectedEndTime!:Date
   selectedPsychologist!:string
 
-  constructor(private http: HttpClient, public appointmentService: AppointmentService,
-              public userService: UserService) {}
+  constructor(public appointmentService: AppointmentService, public userService: UserService) {}
 
 
 
@@ -126,91 +110,44 @@ export class MyAngularSchedulerComponent implements OnInit{
     )
   }
 
-  // @ts-ignore
-  public startDateParser(data: string) {
-    // @ts-ignore
-    if (isNullOrUndefined(this.startDate) && !isNullOrUndefined(data)) {
-      return new Date(data);
-    } else { // @ts-ignore
-      if (!isNullOrUndefined(this.startDate)) {
-            // @ts-ignore
-            return new Date(this.startDate);
-          }
-    }
-  }
-  // @ts-ignore
-  public endDateParser(data: string) {
-    // @ts-ignore
-    if (isNullOrUndefined(this.endDate) && !isNullOrUndefined(data)) {
-      return new Date(data);
-    } else { // @ts-ignore
-      if (!isNullOrUndefined(this.endDate)) {
-            // @ts-ignore
-            return new Date(this.endDate);
-          }
-    }
-  }
-
-  public onDateChange(args: ChangeEventArgs): void {
-    // @ts-ignore
-    if (!isNullOrUndefined(args.event)) {
-      if (args.element.id === "StartTime") {
-        this.startDate = args.value;
-      } else if (args.element.id === "EndTime") {
-        this.endDate = args.value;
-      }
-    }
-  }
-
   public onPopupOpen(args: { type: string; data: { Patient: any, StartTime: Date }; }) {
     //Adjust so the value is the correspondent
     //let fecha = String(args.data.StartTime)
     this.startTimeControl.setValue(args.data.StartTime.toLocaleTimeString())
     this.psychologistControl.setValue(String(this.psychologistList[0]._id))
     this.handleStartTimeClick(args.data.StartTime)
-    //this.selectedStartTime = args.data.StartTime
-
-    if (args.type === 'Editor') {
-      //Args data son los datos del evento
-      //this.control.setValue(args.data.Patient);
-    }
   }
 
   public onPopupClose(args:any) {
     if (args.type === 'Editor' && args.data) {
-      args.data.Subject = this.displayFn(this.psychologistControl.value)
+      args.data.Subject = this.displayDate(this.psychologistControl.value)
       let startTime = new Date('2022-10-19')
       let endTime = new Date('2022-10-19')
 
       let time: string[]|undefined = []
       time = this.startTimeControl.value?.split(':')
-      startTime.setHours(Number(time?.[0]),Number(time?.[1]))
+
+      if(this.startTimeControl.value?.includes("PM")){
+        startTime.setHours(Number(time?.[0])+12,Number(time?.[1])+12)
+      }else{
+        startTime.setHours(Number(time?.[0]),Number(time?.[1]))
+      }
 
       time = this.endTimeControl.value?.split(':')
-      endTime.setHours(Number(time?.[0]),Number(time?.[1]))
+      if(this.endTimeControl.value?.includes("PM")){
+        endTime.setHours(Number(time?.[0])+12,Number(time?.[1])+12)
+      }else{
+        endTime.setHours(Number(time?.[0]),Number(time?.[1]))
+      }
 
       args.data.StartTime = startTime
       args.data.EndTime = endTime
-      console.log(args)
-      /**args.data.StartTime = new Date()
-      args.data.StartTime.setHours(10,0,0,0,0)
-      args.data.EndTime = new Date()
-      args.data.EndTime.setHours(11,0,0,0,0)
-      args.data.Subject = "ines"**/
-      //args.data.Patient = this.patient
     }
-    console.log(args)
-    this.startDate = undefined;
-    this.endDate = undefined;
-  }
-
-  keyEvent(mat:any) {
-    this.patient = mat.option.value;
   }
 
   onCellClick(args: CellClickEventArgs): void {
     this.calendar.openEditor(args, 'Add');
-    }
+  }
 
   onDragStart(args: DragEventArgs): void {
       args.interval = 10; // drag interval time is changed to 10 minutes
@@ -232,11 +169,7 @@ export class MyAngularSchedulerComponent implements OnInit{
     })
   }
 
-  handleEndTimeClick(endTime:Date){
-    this.selectedEndTime = endTime
-  }
-
-  displayFn(value?: number | string | null):string {
+  displayDate(value?: number | string | null):string {
 
     if(value){
       let name = this.psychologistList.find(psychologist => psychologist._id === value)!.name
