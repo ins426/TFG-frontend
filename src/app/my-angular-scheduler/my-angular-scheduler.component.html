@@ -3,12 +3,12 @@
                   [eventSettings]="eventSettings" [minDate]="minDate"
                    [showQuickInfo]="false" (popupOpen)="onPopupOpen($event)" (popupClose)="onPopupClose($event)"
                   [views]="setViews" [currentView]="setViews[2]" startHour='10:00' endHour='20:00'
-                  [selectedDate]="myselectedDate" (cellClick)="onCellClick($event)" (dragStart) = "onDragStart($event)">
+                  [selectedDate]="mySelectedDate" (cellClick)="onCellClick($event)" (dragStart) = "onDragStart($event)">
         <ng-template #editorTemplate let-data>
             <div>
                 <mat-select  #select [formControl]="psychologistControl">
                 <mat-select-trigger >
-                    {{  displayFn(select.value) }}
+                    {{  displayDate(select.value) }}
                 </mat-select-trigger>
                 <mat-option  *ngFor="let psychologist of psychologistList" [value]="psychologist._id">
                     {{ psychologist.name }} {{ psychologist.surname }}
@@ -36,82 +36,6 @@
                 </mat-option>
             </mat-select>
             </div>
-            <!--<div class="availableStartHours-container">
-                <mat-select [formControl]="startTimeControl">
-                <mat-select-trigger>
-                    {{ startTimeControl.value }}
-                </mat-select-trigger>
-                <mat-option *ngFor="let availableStartHour of availableStartAppointments" [value]="availableStartHour.toLocaleTimeString() "
-                    (click)="handleStartTimeClick(availableStartHour)">
-                    {{availableStartHour.toLocaleTimeString()}}
-                </mat-option>
-            </mat-select>
-            </div>
-            <div  class="availableEndHours-container" >
-                <mat-select [formControl]="endTimeControl"  *ngIf="availableEndAppointments">
-                <mat-select-trigger>
-                    {{ endTimeControl.value }}
-                </mat-select-trigger>
-                <mat-option *ngFor="let availableEndHour of availableEndAppointments" [value]="availableEndHour.toLocaleTimeString() ">
-                    {{availableEndHour.toLocaleTimeString()}}
-                </mat-option>
-            </mat-select>
-            </div>-->
-
-            <!--<div class="availableStartHours-container">
-                Horas disponibles pa empezar
-                <mat-chip-list *ngFor="let availableStartHour of availableStartAppointments" [selectable]="true">
-                    <mat-chip [selected]="availableStartHour.getTime() === selectedStartTime.getTime()" (click)="handleStartTimeClick(availableStartHour)">
-                        {{availableStartHour.toLocaleTimeString()}}
-                    </mat-chip>
-                </mat-chip-list>
-            </div>
-            <div class="availableEndHours-container">
-                Horas disponibles pa empezar
-                <mat-chip-list *ngFor="let availableEndHour of availableEndAppointments" [selectable]="true">
-                    <mat-chip [selected]="availableEndHour === selectedEndTime" (click)="handleEndTimeClick(availableEndHour)">
-                        {{availableEndHour.toLocaleTimeString()}}
-                    </mat-chip>
-                </mat-chip-list>
-            </div>-->
-            <!--<div class="availableStartHours-container">
-                Horas disponibles
-                <mat-chip-list *ngFor="let availableStartHour of availableStartAppointments" [selectable]="true">
-                    <mat-chip [selected]="availableStartHour === selectedStartTime" (click)="handleStartTimeClick(availableStartHour)">
-                        {{availableStartHour.toLocaleTimeString()}}
-                    </mat-chip>
-                </mat-chip-list>
-            </div>
-            <div class="availableEndHours-container" *ngIf="availableEndAppointments">
-                Horas disponibles
-                <mat-chip-list *ngFor="let availableEndHour of availableEndAppointments" [selectable]="true">
-                    <mat-chip [selected]="availableEndHour === selectedEndTime" (click)="handleEndTimeClick(availableEndHour)">
-                        {{availableEndHour.toLocaleTimeString()}}
-                    </mat-chip>
-                </mat-chip-list>
-            </div>-->
-        <!--
-            <table *ngIf="data != undefined" class="custom-event-editor" width="100%" cellpadding="5">
-               <input id="Subject" [matAutocomplete]="autocomplete" name="Subject" class="e-field"
-                   [formControl]="psychologistControl">
-            <mat-autocomplete #autocomplete="matAutocomplete" (optionSelected)="keyEvent($event)"
-                              [displayWith]="displayFn.bind(this)" >
-                <mat-option *ngFor="let psychologist of psychologistList" [value]="psychologist._id">
-                    {{ psychologist.name }} {{ psychologist.surname }}
-                </mat-option>
-            </mat-autocomplete>
-                <ejs-datetimepicker id="StartTime" class="e-field" data-name="StartTime" format="M/dd/yy h:mm a"
-                                    [value]="data.StartTime">
-                </ejs-datetimepicker>
-
-                <ejs-datetimepicker id="EndTime" class="e-field" data-name="EndTime" format="M/dd/yy h:mm a"
-                                    [value]="data.EndTime">
-                </ejs-datetimepicker>
-                <input id="Subject" [matAutocomplete]="autocomplete" name="Subject" class="e-field" [formControl]="control">
-                <mat-autocomplete #autocomplete="matAutocomplete" (optionSelected)="keyEvent($event)">
-                    <mat-option *ngFor="let patient of samplePatients" [value]="patient.name">{{ patient.name }}</mat-option>
-                </mat-autocomplete>
-            </table> -->
         </ng-template>
     </ejs-schedule>
 </div>
