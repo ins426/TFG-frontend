@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import {CanActivate, Router} from "@angular/router";
+import { HttpClient } from '@angular/common/http';
+import {Router} from "@angular/router";
 import {DeserializeArray, IJsonArray} from "dcerialize";
 import {map, Observable} from "rxjs";
-import {User} from "../models/user";
+import {AppointmentInterface} from "../interfaces/appointment";
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +24,13 @@ export class AppointmentService {
         map((availableAppointments) => DeserializeArray(availableAppointments, () => Date))))
   }
 
-  getAvailableEndAppointments(id_psychologist:string |null, chosenStart:Date): Observable<Array<Date>> {
-    let dayPsychologist = {day:'2022-10-19',id_psychologist:id_psychologist,chosen_start:chosenStart}
+  getAvailableEndAppointments(id_psychologist:string |null, chosenStart:Date, endTime?:Date): Observable<Array<Date>> {
+    let dayPsychologist = {day:'2022-10-19',id_psychologist:id_psychologist,chosen_start:chosenStart, endTime}
     return (this.http.post<IJsonArray>('/api/available-end-appointment',dayPsychologist).pipe(
         map((availableAppointments) => DeserializeArray(availableAppointments, () => Date))))
+  }
+
+  postAppointment(newAppointment: AppointmentInterface): void{
+    this.http.post<AppointmentInterface>('/api/appointment',newAppointment).subscribe()
   }
 }
