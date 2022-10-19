@@ -11,8 +11,9 @@ DragAndDropService} from '@syncfusion/ej2-angular-schedule';
 import {FormControl} from "@angular/forms";
 import {AppointmentService} from "../../services/appointment.service";
 import {UserService} from "../../services/user.service";
-import {Observable, startWith, switchMap} from "rxjs";
+import {finalize, Observable, startWith, switchMap, tap} from "rxjs";
 import {User} from "../../models/user";
+import {AppointmentInterface} from "../../interfaces/appointment";
 
 declare var require: any;
 
@@ -68,10 +69,14 @@ export class MyAngularSchedulerComponent implements OnInit{
   availableHours: Date[] = []
 
   psychologistList!: User[]
-  availableStartAppointments!:Date[]
-  availableEndAppointments!:Date[]
+  availableStartAppointments:Date[] = []
+  availableEndAppointments:Date[] = []
 
   selectedStartTime!:Date
+  openDialogSelectedStartTime?:Date
+  openDialogSelectedEndTime?:Date
+  openDialogPsychlogist?:string | undefined | null
+
   selectedEndTime!:Date
   selectedPsychologist!:string
 
@@ -97,51 +102,136 @@ export class MyAngularSchedulerComponent implements OnInit{
         startWith(this.psychologistControl.value),
         switchMap((psychologist)=>
           //Get available appointments from selected psychologist in the chosen day
-         this. getAvailableStartHours(psychologist).pipe()
-        )
-    ).subscribe((availableHours)=>{
-      if(this.psychologistControl.value){
-        this.availableStartAppointments = availableHours
+         this.getAvailableStartHours(psychologist).pipe()
+        ),
+        tap(()=>{
+          if(!this.openDialogPsychlogist)
+            this.openDialogPsychlogist = this.psychologistControl.value
+        })
+    ).subscribe( (availableHours) => {
+      if (this.psychologistControl.value) {
+        if(!this.openDialogSelectedStartTime ||
+            (this.openDialogPsychlogist != this.psychologistControl.value)){
+          this.availableStartAppointments = []
+        }
+
+        for(let i = 0; i < availableHours.length; ++i){
+          this.availableStartAppointments.push(availableHours[i])
+        }
       }
+      if (this.availableStartAppointments[0])
+        this.handleAvailableEndHours(this.availableStartAppointments[0])
     })
 
     this.startTimeControl.valueChanges.pipe(
         startWith(this.startTimeControl.value)
+    ).subscribe(async (newStartTime) => {
+          if (this.availableEndAppointments.length != 0 && newStartTime) {
+            this.availableEndAppointments = []
+
+            if(this.openDialogSelectedStartTime?.getTime() === this.toDate(newStartTime).getTime()){
+              await this.handleAvailableEndHours(this.toDate(newStartTime), this.openDialogSelectedEndTime)
+            }else if(this.openDialogSelectedStartTime && this.openDialogSelectedEndTime ){
+              if((this.openDialogSelectedStartTime?.getTime() < this.toDate(newStartTime).getTime() &&
+                this.toDate(newStartTime).getTime() < this.openDialogSelectedEndTime!.getTime())){
+                await this.handleAvailableEndHours(this.toDate(newStartTime), this.openDialogSelectedEndTime)
+              }
+            }
+            else{
+              await this.handleAvailableEndHours(this.toDate(newStartTime))
+            }
+            this.endTimeControl.setValue("")
+          }
+        }
     )
+
   }
 
-  public onPopupOpen(args: { type: string; data: { Patient: any, StartTime: Date }; }) {
+  public async onPopupOpen(args: { type: string; data: { Patient: any, StartTime: Date, Id: number, EndTime: Date,
+      _id: number, Subject:string, id_psychologist:number }; }) {
     //Adjust so the value is the correspondent
     //let fecha = String(args.data.StartTime)
+    this.availableEndAppointments = []
+    this.availableStartAppointments = []
+    this.openDialogSelectedStartTime = undefined
+    this.openDialogSelectedEndTime = undefined
+    this.openDialogPsychlogist = undefined
+
+    if (args.data.Id) {
+      this.openDialogSelectedStartTime = new Date(args.data.StartTime)
+      this.openDialogSelectedEndTime = new Date(args.data.EndTime)
+      this.availableStartAppointments.push(args.data.StartTime)
+
+      let time = new Date(args.data.StartTime)
+      time.setMinutes(time.getMinutes() + 5)
+      let middleTime = new Date(args.data.EndTime)
+      middleTime.setMinutes(middleTime.getMinutes() - 5)
+
+      for (let i = time; i.getTime() <= middleTime.getTime(); i.setMinutes(i.getMinutes() + 5)) {
+        let hour = new Date(i)
+        this.availableStartAppointments.push(hour)
+      }
+
+      this.psychologistList.forEach((psychologist)=>{
+        if(psychologist._id === args.data.id_psychologist){
+          this.psychologistControl.setValue(String(psychologist._id))
+        }
+      })
+    }else{
+      this.psychologistControl.setValue(String(this.psychologistList[0]._id))
+    }
+
+    if (!args.data.Id) {
+      this.handleAvailableEndHours(args.data.StartTime)
+    } else {
+      this.handleAvailableEndHours(args.data.StartTime, args.data.EndTime)
+    }
+
     this.startTimeControl.setValue(args.data.StartTime.toLocaleTimeString())
-    this.psychologistControl.setValue(String(this.psychologistList[0]._id))
-    this.handleStartTimeClick(args.data.StartTime)
+
   }
 
   public onPopupClose(args:any) {
     if (args.type === 'Editor' && args.data) {
       args.data.Subject = this.displayDate(this.psychologistControl.value)
+
+      //Format hours so Syncfusion Angular Scheduler can display them
       let startTime = new Date('2022-10-19')
       let endTime = new Date('2022-10-19')
 
       let time: string[]|undefined = []
       time = this.startTimeControl.value?.split(':')
 
-      if(this.startTimeControl.value?.includes("PM")){
-        startTime.setHours(Number(time?.[0])+12,Number(time?.[1])+12)
+      if(this.startTimeControl.value?.includes("PM") &&
+      time?.[0] != '12'){
+        startTime.setHours(Number(time?.[0])+12,Number(time?.[1]))
       }else{
         startTime.setHours(Number(time?.[0]),Number(time?.[1]))
       }
 
       time = this.endTimeControl.value?.split(':')
-      if(this.endTimeControl.value?.includes("PM")){
-        endTime.setHours(Number(time?.[0])+12,Number(time?.[1])+12)
+      if(this.endTimeControl.value?.includes("PM") &&
+      time?.[0] != '12'){
+        endTime.setHours(Number(time?.[0])+12,Number(time?.[1]))
       }else{
         endTime.setHours(Number(time?.[0]),Number(time?.[1]))
       }
 
       args.data.StartTime = startTime
       args.data.EndTime = endTime
+
+      const newAppointment: AppointmentInterface = {
+        Subject:args.data.Subject,
+        StartTime: args.data.StartTime,
+        EndTime: args.data.EndTime,
+        id_psychologist: this.psychologistControl!.value,
+        Observations:"esto es una prueba",
+        id_patient: "63396cf1912916e9cd0d3909",
+        color: "red"
+      }
+
+      this.appointmentService.postAppointment(newAppointment)
+
     }
   }
 
@@ -157,15 +247,26 @@ export class MyAngularSchedulerComponent implements OnInit{
     return this.appointmentService.getAvailableStartAppointments(psychologist)
   }
 
-  getAvailableEndHours(psychologist:string |null,chosenStart:Date): Observable<Array<Date>>{
-    return this.appointmentService.getAvailableEndAppointments(psychologist,chosenStart)
+  getAvailableEndHours(psychologist:string |null,chosenStart:Date, endTime?:Date): Observable<Array<Date>>{
+    return this.appointmentService.getAvailableEndAppointments(psychologist,chosenStart, endTime)
   }
 
-  handleStartTimeClick(startTime:Date){
+  handleAvailableEndHours(startTime:Date, endTime?:Date){
     this.selectedStartTime = startTime
 
-    this.getAvailableEndHours(this.psychologistControl.value,this.selectedStartTime).subscribe((availableEndTimes)=>{
-      this.availableEndAppointments = availableEndTimes
+    this.getAvailableEndHours(this.psychologistControl.value,this.selectedStartTime, endTime).pipe(
+        finalize(()=>{
+          //When modifying dialog
+          if(this.openDialogSelectedEndTime && startTime.getTime() === this.openDialogSelectedStartTime?.getTime()){
+            this.endTimeControl.setValue(this.openDialogSelectedEndTime.toLocaleTimeString())
+          }else{
+            this.endTimeControl.setValue(this.availableEndAppointments[0].toLocaleTimeString())
+          }
+        })
+    ).subscribe((availableEndHours)=>{
+       availableEndHours.forEach((availableHour)=>{
+         this.availableEndAppointments.push(availableHour)
+       })
     })
   }
 
@@ -185,8 +286,20 @@ export class MyAngularSchedulerComponent implements OnInit{
     return date?.toLocaleTimeString()
   }
 
-  toDate(time:string | number | Date):Date{
-    return new Date(time)
+  toDate(timeString:string):Date{
+    let date = new Date('2022-10-19')
+
+    let time: string[]|undefined = []
+    time = timeString.split(':')
+
+    if(timeString.includes("PM") &&
+      time?.[0] != '12'){
+        date.setHours(Number(time?.[0])+12,Number(time?.[1]))
+      }else{
+        date.setHours(Number(time?.[0]),Number(time?.[1]))
+      }
+
+    return date
   }
 
 }

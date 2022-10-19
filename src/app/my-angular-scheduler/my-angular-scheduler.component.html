@@ -21,7 +21,7 @@
                     {{ startTimeControl.value }}
                 </mat-select-trigger>
                 <mat-option *ngFor="let availableStartHour of availableStartAppointments" [value]="availableStartHour.toLocaleTimeString() "
-                    (click)="handleStartTimeClick(availableStartHour)">
+                    (click)="handleAvailableEndHours(availableStartHour)">
                     {{availableStartHour.toLocaleTimeString()}}
                 </mat-option>
             </mat-select>
