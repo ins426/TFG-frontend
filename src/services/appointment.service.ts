@@ -33,4 +33,8 @@ export class AppointmentService {
   postAppointment(newAppointment: AppointmentInterface): void{
     this.http.post<AppointmentInterface>('/api/appointment',newAppointment).subscribe()
   }
+
+  modifyAppointment(updatedAppointment: AppointmentInterface,id:number):void{
+    this.http.put<AppointmentInterface>('/api/appointment/'+String(id),updatedAppointment).subscribe()
+  }
 }
