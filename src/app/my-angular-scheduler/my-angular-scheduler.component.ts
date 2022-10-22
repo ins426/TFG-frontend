@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {
   CellClickEventArgs, DragEventArgs, EventRenderedArgs,
@@ -47,7 +47,7 @@ L10n.load({
   templateUrl: './my-angular-scheduler.component.html',
   styleUrls: ['./my-angular-scheduler.component.scss']
 })
-export class MyAngularSchedulerComponent implements OnInit{
+export class MyAngularSchedulerComponent implements OnInit, OnChanges{
   public workWeekDays: number[] = [1,2,3,4,5];
   today = new Date()
   public minDate = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
@@ -91,6 +91,10 @@ export class MyAngularSchedulerComponent implements OnInit{
   public onEventRendered(args: EventRenderedArgs): void {
     const categoryColor: string = args.data['CategoryColor'] as string;
     args.element.style.backgroundColor = categoryColor;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("holaaaaa")
   }
 
   ngOnInit(): void {
@@ -187,7 +191,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   }
 
   public async onPopupOpen(args: { type: string; data: { Patient: any, StartTime: Date, Id: number, EndTime: Date,
-      _id: number, Subject:string, id_psychologist:number }; }) {
+      _id: number, Subject:string, id_psychologist:number },element:any; }) {
     //Adjust so the value is the correspondent
     //let fecha = String(args.data.StartTime)
     this.availableEndAppointments = []
@@ -238,7 +242,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   }
 
   public onPopupClose(args: { type: string; data: { Patient: any, StartTime: Date, Id: number, EndTime: Date,
-      _id: number, Subject:string, id_psychologist:number }; }) {
+      _id: number, Subject:string, id_psychologist:number, CategoryColor:any }; element:any }) {
 
     if (args.type === 'Editor' && args.data) {
       if(this.openDialogSelectedId){
@@ -248,6 +252,12 @@ export class MyAngularSchedulerComponent implements OnInit{
         appointmentRecords[this.openDialogSelectedId-1].StartTime = startTime
         appointmentRecords[this.openDialogSelectedId-1].EndTime = endTime
 
+        let psychologist = this.psychologistList.find(({_id})=>String(_id) == this.psychologistControl!.value)
+        args.data.CategoryColor = psychologist?.CategoryColor
+        args.data.Subject = psychologist!.name + " "+ psychologist!.surname
+
+        console.log(args.data)
+        this.calendar.saveEvent(args.data)
         const updatedAppointment: AppointmentInterface = {
           Subject:args.data.Subject,
           StartTime: startTime,
@@ -255,8 +265,9 @@ export class MyAngularSchedulerComponent implements OnInit{
           id_psychologist: this.psychologistControl!.value,
           Observations:"esto es una prueba",
           id_patient: "63396cf1912916e9cd0d3909",
-          color: "red"
+          CategoryColor: psychologist!.CategoryColor
         }
+
         this.appointmentService.modifyAppointment(updatedAppointment,appointmentRecords[this.openDialogSelectedId-1]._id)
       }else{
         args.data.Subject = this.displayDate(this.psychologistControl.value)
@@ -268,6 +279,9 @@ export class MyAngularSchedulerComponent implements OnInit{
         args.data.StartTime = startTime
         args.data.EndTime = endTime
 
+        let psychologist = this.psychologistList.find(({_id})=>String(_id) == this.psychologistControl!.value)
+        args.data.CategoryColor = psychologist?.CategoryColor
+
         const newAppointment: AppointmentInterface = {
           Subject:args.data.Subject,
           StartTime: args.data.StartTime,
@@ -275,12 +289,18 @@ export class MyAngularSchedulerComponent implements OnInit{
           id_psychologist: this.psychologistControl!.value,
           Observations:"esto es una prueba",
           id_patient: "63396cf1912916e9cd0d3909",
-          color: "red"
+          CategoryColor: psychologist!.CategoryColor
         }
 
         this.appointmentService.postAppointment(newAppointment)
+        this.appointmentService.getAppointments().subscribe((response: any) => {
+            let records: Record<string, any>[] = []
+            response.forEach((appointment: any) => records.push(appointment));
+            this.eventSettings = {dataSource: records}
+          })
         }
     }
+
   }
 
   onCellClick(args: CellClickEventArgs): void {

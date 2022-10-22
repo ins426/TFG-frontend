@@ -5,5 +5,5 @@ export interface AppointmentInterface {
     id_psychologist: string|null;
     Observations: string;
     id_patient:string
-    color:string
+    CategoryColor:string
 }
