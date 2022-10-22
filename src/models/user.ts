@@ -36,7 +36,10 @@ export class User{
    */
   @autoserializeAs(() => String) password: string;
 
-
+  /**
+   * Psychologist color
+   */
+  @autoserializeAs(() => String) CategoryColor: string;
 
   constructor(
       _id:number|undefined,
@@ -45,7 +48,8 @@ export class User{
       email:string,
       id_patients:number[],
       rol:string,
-      password: string
+      password: string,
+      CategoryColor:string
   ) {
       this._id = _id
       this.name = name
@@ -54,5 +58,6 @@ export class User{
       this.id_patients = id_patients
       this.rol = rol
       this.password = password
+      this.CategoryColor = CategoryColor
   }
 }
