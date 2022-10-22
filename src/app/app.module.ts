@@ -26,6 +26,7 @@ import {MyAngularSchedulerComponent} from "./my-angular-scheduler/my-angular-sch
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSelectModule} from '@angular/material/select';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {MatChipsModule} from '@angular/material/chips';
         BrowserAnimationsModule,
         MatSidenavModule,
         MatSelectModule,
-        MatChipsModule
+        MatChipsModule,
+        MatCardModule
     ],
   providers: [
       ActiveSessionGuard,
