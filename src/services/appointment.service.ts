@@ -18,14 +18,17 @@ export class AppointmentService {
     return this.http.get('/api/appointment')
   }
 
-  getAvailableStartAppointments(id_psychologist:string|null): Observable<Array<Date>> {
-    let dayPsychologist = {day:'2022-10-19',id_psychologist:id_psychologist}
+  getAvailableStartAppointments(id_psychologist:string|null, selectedDate:string): Observable<Array<Date>> {
+
+    let dayPsychologist = {day:selectedDate,id_psychologist:id_psychologist}
     return (this.http.post<IJsonArray>('/api/available-start-appointment',dayPsychologist).pipe(
         map((availableAppointments) => DeserializeArray(availableAppointments, () => Date))))
   }
 
-  getAvailableEndAppointments(id_psychologist:string |null, chosenStart:Date, endTime?:Date): Observable<Array<Date>> {
-    let dayPsychologist = {day:'2022-10-19',id_psychologist:id_psychologist,chosen_start:chosenStart, endTime}
+  getAvailableEndAppointments(id_psychologist:string |null, chosenStart:Date, selectedDate:string,
+                              endTime?:Date,): Observable<Array<Date>> {
+
+    let dayPsychologist = {day:selectedDate,id_psychologist:id_psychologist,chosen_start:chosenStart, endTime}
     return (this.http.post<IJsonArray>('/api/available-end-appointment',dayPsychologist).pipe(
         map((availableAppointments) => DeserializeArray(availableAppointments, () => Date))))
   }

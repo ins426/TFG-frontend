@@ -3,7 +3,8 @@
                   [eventSettings]="eventSettings"
                    [showQuickInfo]="false" (popupOpen)="onPopupOpen($event)" (popupClose)="onPopupClose($event)"
                   [views]="setViews" [currentView]="setViews[2]" startHour='10:00' endHour='20:00'
-                  [selectedDate]="mySelectedDate" (cellClick)="onCellClick($event)" (dragStart) = "onDragStart($event)">
+                  [selectedDate]="mySelectedDate" (cellClick)="onCellClick($event)" (dragStart) = "onDragStart($event)"
+                    (eventRendered)="onEventRendered($event)">
         <ng-template #editorTemplate let-data>
             <div>
                 <mat-form-field>
@@ -45,6 +46,9 @@
                 </mat-select>
                 </mat-form-field>
             </div>
+            <mat-card class="calendar-card">
+              <mat-calendar #matCalendar (selectedChange)="changeDate($event)" [(selected)]="selectedDay"></mat-calendar>
+            </mat-card>
         </ng-template>
     </ejs-schedule>
 </div>
