@@ -8,8 +8,8 @@
         <ng-template #editorTemplate let-data>
             <div>
                 <mat-form-field>
-                    <mat-select  #select [formControl]="psychologistControl">
-                    <mat-select-trigger >
+                    <mat-select  #select [formControl]="psychologistControl" >
+                    <mat-select-trigger>
                         {{  displayDate(select.value) }}
                     </mat-select-trigger>
                     <mat-option  *ngFor="let psychologist of psychologistList" [value]="psychologist._id">

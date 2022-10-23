@@ -256,8 +256,6 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
         args.data.CategoryColor = psychologist?.CategoryColor
         args.data.Subject = psychologist!.name + " "+ psychologist!.surname
 
-        console.log(args.data)
-        this.calendar.saveEvent(args.data)
         const updatedAppointment: AppointmentInterface = {
           Subject:args.data.Subject,
           StartTime: startTime,
@@ -268,7 +266,20 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
           CategoryColor: psychologist!.CategoryColor
         }
 
+
         this.appointmentService.modifyAppointment(updatedAppointment,appointmentRecords[this.openDialogSelectedId-1]._id)
+
+        if(this.eventSettings?.dataSource instanceof Array){
+          for(let i = 0, a = this.eventSettings.dataSource; i < a.length;++i){
+            let event = a[i]
+            //TODO Complete with the rest of fields
+            if(appointmentRecords[this.openDialogSelectedId-1]._id == event['_id']){
+              event['Subject'] = args.data.Subject
+              event['CategoryColor'] = psychologist!.CategoryColor
+              event['id_psychologist'] = this.psychologistControl!.value
+            }
+          }
+        }
       }else{
         args.data.Subject = this.displayDate(this.psychologistControl.value)
 
@@ -291,6 +302,7 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
           id_patient: "63396cf1912916e9cd0d3909",
           CategoryColor: psychologist!.CategoryColor
         }
+
 
         this.appointmentService.postAppointment(newAppointment)
         this.appointmentService.getAppointments().subscribe((response: any) => {
