@@ -135,9 +135,27 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
           }
           if(!this.openDialogSelectedId)
             this.availableStartAppointments = []
-          for(let i = 0; i < availableHours.length; ++i){
-            this.availableStartAppointments.push(availableHours[i])
+
+          if(this.availableStartAppointments == []){
+            for(let i = 0; i < availableHours.length; ++i){
+              this.availableStartAppointments.push(availableHours[i])
+            }
+          }else{
+            for(let i = 0; i < availableHours.length; ++i){
+              let contains = false
+              for(let j = 0; j < this.availableStartAppointments.length; ++j){
+                if(this.availableStartAppointments[j].getTime() == availableHours[i].getTime()){
+                  contains = true
+                  break
+                }
+              }
+              if(!contains){
+                this.availableStartAppointments.push(availableHours[i])
+              }
+            }
           }
+
+
           this.availableStartAppointments.sort(
               (a,b)=>a.getTime() - b.getTime()
           )
@@ -154,6 +172,20 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
             }
           }
         }
+
+        let contains= false
+        for(let i = 0; i < this.availableStartAppointments.length; ++i){
+          if(this.availableStartAppointments[i].toLocaleTimeString() == this.startTimeControl.value){
+            contains = true
+            break
+          }
+        }
+
+        if(!contains && this.availableStartAppointments[0]){
+          this.startTimeControl.setValue(this.availableStartAppointments[0].toLocaleTimeString())
+          this.selectedStartTime = this.availableStartAppointments[0]
+        }
+
          if(this.availableStartAppointments[0] && (!this.openDialogPsychlogist ||
              this.openDialogPsychlogist != this.psychologistControl.value)){
           this.handleAvailableEndHours(this.selectedStartTime)
@@ -432,11 +464,19 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
 
   changeDate(newDate:Date):void{
     this.selectedDay = newDate
+
     this.getAvailableStartHours(this.psychologistControl.value).subscribe((availableHours)=>{
       this.availableStartAppointments = []
       for(let i = 0; i < availableHours.length; ++i){
             this.availableStartAppointments.push(availableHours[i])
       }
+      if(this.openDialogPsychlogist == this.psychologistControl.value){
+        this.availableStartAppointments = this.openDialogOldAppointments
+        this.availableStartAppointments.sort(
+              (a,b)=>a.getTime() - b.getTime()
+        )
+      }
+
 
       let includeHour = false
       for(let i = 0; i < this.availableStartAppointments.length; ++i){
