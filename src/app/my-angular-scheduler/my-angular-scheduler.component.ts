@@ -47,7 +47,7 @@ L10n.load({
   templateUrl: './my-angular-scheduler.component.html',
   styleUrls: ['./my-angular-scheduler.component.scss']
 })
-export class MyAngularSchedulerComponent implements OnInit, OnChanges{
+export class MyAngularSchedulerComponent implements OnInit{
   public workWeekDays: number[] = [1,2,3,4,5];
   today = new Date()
   public minDate = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
@@ -91,10 +91,6 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
   public onEventRendered(args: EventRenderedArgs): void {
     const categoryColor: string = args.data['CategoryColor'] as string;
     args.element.style.backgroundColor = categoryColor;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log("holaaaaa")
   }
 
   ngOnInit(): void {
@@ -152,6 +148,32 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
               if(!contains){
                 this.availableStartAppointments.push(availableHours[i])
               }
+            }
+          }
+
+          this.availableStartAppointments.sort(
+              (a,b)=>a.getTime() - b.getTime()
+          )
+
+          let hourBefore = new Date(this.openModifyDialogSelectedStartTime!)
+          hourBefore.setHours(hourBefore.getHours()-1)
+
+          if(hourBefore.getHours() < 10){
+            let startDay = new Date(this.openModifyDialogSelectedStartTime!)
+            startDay.setHours(10,0,0,0)
+
+            for(let i = new Date(startDay); i.getTime() < this.openModifyDialogSelectedStartTime!.getTime()
+                ;i.setMinutes(i.getMinutes() + 5)){
+              let hour = new Date(i)
+              this.availableStartAppointments.push(hour)
+            }
+          }else if(this.isIntervalAvailable(hourBefore)){
+            let start = new Date(hourBefore)
+            start.setMinutes(hourBefore.getMinutes()+5)
+            for(let i = start ; i.getTime() < this.openModifyDialogSelectedStartTime!.getTime()
+                ;i.setMinutes(i.getMinutes() + 5)){
+              let hour = new Date(i)
+              this.availableStartAppointments.push(hour)
             }
           }
 
@@ -241,6 +263,7 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
       this.openModifyDialogSelectedEndTime = new Date(args.data.EndTime)
       this.availableStartAppointments.push(args.data.StartTime)
       this.openDialogSelectedId = args.data.Id
+
 
       let time = new Date(args.data.StartTime)
       time.setMinutes(time.getMinutes() + 5)
@@ -351,10 +374,6 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
     this.calendar.openEditor(args, 'Add');
   }
 
-  onDragStart(args: DragEventArgs): void {
-      args.interval = 10; // drag interval time is changed to 10 minutes
-  }
-
   getAvailableStartHours(psychologist:string |null): Observable<Array<Date>>{
     let date = ""
     let month = Number(this.selectedDay?.getMonth())+1
@@ -462,36 +481,19 @@ export class MyAngularSchedulerComponent implements OnInit, OnChanges{
     return time
   }
 
-  changeDate(newDate:Date):void{
-    this.selectedDay = newDate
-
-    this.getAvailableStartHours(this.psychologistControl.value).subscribe((availableHours)=>{
-      this.availableStartAppointments = []
-      for(let i = 0; i < availableHours.length; ++i){
-            this.availableStartAppointments.push(availableHours[i])
-      }
-      if(this.openDialogPsychlogist == this.psychologistControl.value){
-        this.availableStartAppointments = this.openDialogOldAppointments
-        this.availableStartAppointments.sort(
-              (a,b)=>a.getTime() - b.getTime()
-        )
-      }
+  isIntervalAvailable(startHour:Date):boolean{
+    let nextHour = new Date(startHour)
+    nextHour.setHours(nextHour.getHours()+1)
 
 
-      let includeHour = false
-      for(let i = 0; i < this.availableStartAppointments.length; ++i){
-        if(this.availableStartAppointments[i].getHours() == this.toDate(this.startTimeControl.value!).getHours() &&
-        this.availableStartAppointments[i].getMinutes() == this.toDate(this.startTimeControl.value!).getMinutes()){
-          includeHour = true
-          break
+    for(let j = 0; j < this.availableStartAppointments.length; j+=2){
+        if(this.availableStartAppointments[j].getTime() == startHour.getTime()){
+          if(this.availableStartAppointments[j+1] && this.availableStartAppointments[j+1].getTime() == nextHour.getTime() )
+            return true
         }
-      }
+    }
 
-      if(!includeHour){
-        this.startTimeControl.setValue(this.availableStartAppointments[0].toLocaleTimeString())
-      }
-
-    })
+    return false
   }
 
 }
