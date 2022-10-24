@@ -1,6 +1,7 @@
 import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {
+  ActionEventArgs,
   CellClickEventArgs, DragEventArgs, EventRenderedArgs,
   ScheduleComponent, View
 } from '@syncfusion/ej2-angular-schedule';
@@ -61,8 +62,10 @@ export class MyAngularSchedulerComponent implements OnInit{
   public setViews: View[] = ['Day', 'Month', 'WorkWeek']
 
   public psychologistControl = new FormControl('')
+  public patientControl = new FormControl('')
   public startTimeControl = new FormControl('')
   public endTimeControl = new FormControl('')
+  public observationsControl = new FormControl('')
 
 
   public eventSettings?: EventSettingsModel
@@ -70,6 +73,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   availableHours: Date[] = []
 
   psychologistList!: User[]
+  patientsList!: User[]
   availableStartAppointments:Date[] = []
   availableEndAppointments:Date[] = []
 
@@ -100,6 +104,10 @@ export class MyAngularSchedulerComponent implements OnInit{
 
     this.userService.getPsychologists().subscribe((psychologists) => {
       this.psychologistList = psychologists
+    })
+
+    this.userService.getPatients().subscribe((patients)=>{
+      this.patientsList = patients
     })
 
     //Get all appointments according to a role
@@ -245,7 +253,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   }
 
   public async onPopupOpen(args: { type: string; data: { Patient: any, StartTime: Date, Id: number, EndTime: Date,
-      _id: number, Subject:string, id_psychologist:number },element:any; }) {
+      _id: number, Subject:string, id_psychologist:number, id_patient:number, Observations:string },element:any; }) {
     //Adjust so the value is the correspondent
     //let fecha = String(args.data.StartTime)
     this.availableEndAppointments = []
@@ -282,9 +290,17 @@ export class MyAngularSchedulerComponent implements OnInit{
           this.psychologistControl.setValue(String(psychologist._id))
         }
       })
+      this.patientsList.forEach((patient)=>{
+        if(patient._id === args.data.id_patient){
+          this.patientControl.setValue(String(patient._id))
+        }
+      })
+      this.observationsControl.setValue(args.data.Observations)
+
     }else{
       this.openCreateDialogSelectedStartTime = new Date(args.data.StartTime)
       this.psychologistControl.setValue(String(this.psychologistList[0]._id))
+      this.patientControl.setValue(String(this.patientsList[0]._id))
     }
 
     if (!args.data.Id) {
@@ -297,7 +313,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   }
 
   public onPopupClose(args: { type: string; data: { Patient: any, StartTime: Date, Id: number, EndTime: Date,
-      _id: number, Subject:string, id_psychologist:number, CategoryColor:any }; element:any }) {
+      _id: number, Subject:string, id_psychologist:number,id_patient:number, CategoryColor:any, observations:string }; element:any }) {
 
     if (args.type === 'Editor' && args.data) {
       if(this.openDialogSelectedId){
@@ -308,19 +324,20 @@ export class MyAngularSchedulerComponent implements OnInit{
         appointmentRecords[this.openDialogSelectedId-1].EndTime = endTime
 
         let psychologist = this.psychologistList.find(({_id})=>String(_id) == this.psychologistControl!.value)
+        let patient = this.patientsList.find(({_id})=>String(_id) == this.patientControl!.value)
+
         args.data.CategoryColor = psychologist?.CategoryColor
-        args.data.Subject = psychologist!.name + " "+ psychologist!.surname
+        args.data.Subject = patient!.name + " "+ patient!.surname
 
         const updatedAppointment: AppointmentInterface = {
           Subject:args.data.Subject,
           StartTime: startTime,
           EndTime: endTime,
           id_psychologist: this.psychologistControl!.value,
-          Observations:"esto es una prueba",
-          id_patient: "63396cf1912916e9cd0d3909",
+          Observations:this.observationsControl.value!,
+          id_patient: this.patientControl!.value,
           CategoryColor: psychologist!.CategoryColor
         }
-
 
         this.appointmentService.modifyAppointment(updatedAppointment,appointmentRecords[this.openDialogSelectedId-1]._id)
 
@@ -332,11 +349,13 @@ export class MyAngularSchedulerComponent implements OnInit{
               event['Subject'] = args.data.Subject
               event['CategoryColor'] = psychologist!.CategoryColor
               event['id_psychologist'] = this.psychologistControl!.value
+              event['id_patient'] = this.patientControl!.value
+              event['Observations'] = this.observationsControl.value!
             }
           }
         }
       }else{
-        args.data.Subject = this.displayDate(this.psychologistControl.value)
+        args.data.Subject = this.displayPatient(this.patientControl.value)
 
         //Format hours so Syncfusion Angular Scheduler can display them
         let startTime = this.getTime('start')
@@ -346,6 +365,7 @@ export class MyAngularSchedulerComponent implements OnInit{
         args.data.EndTime = endTime
 
         let psychologist = this.psychologistList.find(({_id})=>String(_id) == this.psychologistControl!.value)
+
         args.data.CategoryColor = psychologist?.CategoryColor
 
         const newAppointment: AppointmentInterface = {
@@ -353,8 +373,8 @@ export class MyAngularSchedulerComponent implements OnInit{
           StartTime: args.data.StartTime,
           EndTime: args.data.EndTime,
           id_psychologist: this.psychologistControl!.value,
-          Observations:"esto es una prueba",
-          id_patient: "63396cf1912916e9cd0d3909",
+          Observations:this.observationsControl.value!,
+          id_patient: this.patientControl!.value,
           CategoryColor: psychologist!.CategoryColor
         }
 
@@ -434,6 +454,18 @@ export class MyAngularSchedulerComponent implements OnInit{
     }
   }
 
+  displayPatient(value?: number | string | null):string {
+
+    if(value){
+      let name = this.patientsList.find(patient => patient._id === value)!.name
+      let surname = this.patientsList.find(patient => patient._id === value)!.surname
+
+      return name+" "+surname
+    }else{
+      return ""
+    }
+  }
+
   display(date:Date|null){
     return date?.toLocaleTimeString()
   }
@@ -494,6 +526,20 @@ export class MyAngularSchedulerComponent implements OnInit{
     }
 
     return false
+  }
+
+
+  onActionBegin(args: ActionEventArgs) {
+    if (args.requestType === 'eventRemove') {
+      if (args.deletedRecords!.length > 0) {
+        if(args.deletedRecords instanceof Array){
+          if(this.eventSettings?.dataSource instanceof Array){
+            this.eventSettings.dataSource.splice(args.deletedRecords[0]['Id']-1,1)
+            this.appointmentService.deleteAppointment(args.deletedRecords[0]['_id'])
+          }
+        }
+      }
+    }
   }
 
 }

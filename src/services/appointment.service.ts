@@ -40,4 +40,8 @@ export class AppointmentService {
   modifyAppointment(updatedAppointment: AppointmentInterface,id:number):void{
     this.http.put<AppointmentInterface>('/api/appointment/'+String(id),updatedAppointment).subscribe()
   }
+
+  deleteAppointment(deleteAppointmentId: number): void{
+    this.http.delete('/api/appointment/'+String(deleteAppointmentId)).subscribe()
+  }
 }

@@ -17,4 +17,10 @@ export class UserService {
         map((psychologists) => DeserializeArray(psychologists, () => User)))
     )
   }
+
+  getPatients(): Observable<Array<User>>{
+    return (this.http.get<IJsonArray>('/api/patients').pipe(
+        map((patients) => DeserializeArray(patients, () => User)))
+    )
+  }
 }
