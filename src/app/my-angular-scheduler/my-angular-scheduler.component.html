@@ -4,47 +4,74 @@
                    [showQuickInfo]="false" (popupOpen)="onPopupOpen($event)" (popupClose)="onPopupClose($event)"
                   [views]="setViews" [currentView]="setViews[2]" startHour='10:00' endHour='20:00'
                   [selectedDate]="mySelectedDate" (cellClick)="onCellClick($event)"
+                  (actionBegin)="onActionBegin($event)"
     (eventRendered)="onEventRendered($event)">
         <ng-template #editorTemplate let-data>
-            <div>
-                <mat-form-field>
-                    <mat-select  #select [formControl]="psychologistControl" >
+            <div fxLayout="row">
+               <div>
+                  <div>
+                    <mat-form-field>
+                        <mat-select  #select [formControl]="psychologistControl" >
+                        <mat-select-trigger>
+                            {{  displayDate(select.value) }}
+                        </mat-select-trigger>
+                        <mat-option  *ngFor="let psychologist of psychologistList" [value]="psychologist._id">
+                            {{ psychologist.name }} {{ psychologist.surname }}
+                        </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-select  #selectPatient [formControl]="patientControl" >
+                        <mat-select-trigger>
+                            {{  displayPatient(selectPatient.value) }}
+                        </mat-select-trigger>
+                        <mat-option  *ngFor="let patient of patientsList" [value]="patient._id">
+                            {{ patient.name }} {{ patient.surname }}
+                        </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="availableStartHours-container">
+                    <mat-form-field>
+                        <mat-label>Selecciona hora de inicio</mat-label>
+                    <mat-select [formControl]="startTimeControl">
                     <mat-select-trigger>
-                        {{  displayDate(select.value) }}
+                        {{ startTimeControl.value }}
                     </mat-select-trigger>
-                    <mat-option  *ngFor="let psychologist of psychologistList" [value]="psychologist._id">
-                        {{ psychologist.name }} {{ psychologist.surname }}
+                    <mat-option *ngFor="let availableStartHour of availableStartAppointments" [value]="availableStartHour.toLocaleTimeString() "
+                        >
+                        {{availableStartHour.toLocaleTimeString()}}
                     </mat-option>
                 </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="availableStartHours-container">
-                <mat-form-field>
-                    <mat-label>Selecciona hora de inicio</mat-label>
-                <mat-select [formControl]="startTimeControl">
-                <mat-select-trigger>
-                    {{ startTimeControl.value }}
-                </mat-select-trigger>
-                <mat-option *ngFor="let availableStartHour of availableStartAppointments" [value]="availableStartHour.toLocaleTimeString() "
-                    >
-                    {{availableStartHour.toLocaleTimeString()}}
-                </mat-option>
-            </mat-select>
-                </mat-form-field>
+                    </mat-form-field>
 
+                </div>
+                <div  class="availableEndHours-container" >
+                    <mat-form-field>
+                        <mat-label>Selecciona hora de fin</mat-label>
+                        <mat-select [formControl]="endTimeControl"  *ngIf="availableEndAppointments">
+                        <mat-select-trigger>
+                            {{ endTimeControl.value }}
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let availableEndHour of availableEndAppointments" [value]="availableEndHour.toLocaleTimeString() ">
+                            {{availableEndHour.toLocaleTimeString()}}
+                        </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
-            <div  class="availableEndHours-container" >
-                <mat-form-field>
-                    <mat-label>Selecciona hora de fin</mat-label>
-                    <mat-select [formControl]="endTimeControl"  *ngIf="availableEndAppointments">
-                    <mat-select-trigger>
-                        {{ endTimeControl.value }}
-                    </mat-select-trigger>
-                    <mat-option *ngFor="let availableEndHour of availableEndAppointments" [value]="availableEndHour.toLocaleTimeString() ">
-                        {{availableEndHour.toLocaleTimeString()}}
-                    </mat-option>
-                </mat-select>
-                </mat-form-field>
+                <div>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Observaciones</mat-label>
+                      <textarea matInput
+                                cdkTextareaAutosize
+                                #autosize="cdkTextareaAutosize"
+                                cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="5" [formControl]="observationsControl"></textarea>
+                    </mat-form-field>
+                </div>
             </div>
         </ng-template>
     </ejs-schedule>

@@ -4,6 +4,6 @@ export interface AppointmentInterface {
     EndTime?: Date;
     id_psychologist: string|null;
     Observations: string;
-    id_patient:string
+    id_patient:string|null
     CategoryColor:string
 }
