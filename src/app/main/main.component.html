@@ -1,5 +1,7 @@
 <div fxLayout="row" class="content">
-    <mat-drawer-container #drawercontainer  [hasBackdrop]="true" class="sidenav-menu-wrapper" autosize (backdropClick)="close()">
+    <mat-drawer-container #drawercontainer  [hasBackdrop]="true" class="sidenav-menu-wrapper"
+                          [class.extend]="drawer.opened"
+                          autosize (backdropClick)="close()">
         <mat-drawer #drawer class="sidenav-menu" mode="side" >
             <app-side-bar></app-side-bar>
         </mat-drawer>

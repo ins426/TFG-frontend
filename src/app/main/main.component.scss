@@ -4,13 +4,24 @@
 }
 
 .sidenav-menu-wrapper{
-  position: absolute;
+  position: fixed;
   height: 100%;
 }
 
+.extend{
+  width: 100%;
+}
 ::ng-deep{
   .mat-drawer-opened{
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    //box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+
+  .mat-drawer-container {
+    background-color: transparent;
+  }
+
+  .mat-drawer-backdrop.mat-drawer-shown{
+    width: 100%;
   }
 }
 
@@ -30,7 +41,7 @@ $duration: 0.5s;
 
 .arrow-icon{
   padding: 5px;
-   width: 12px;
+  width: 12px;
   height: 12px;
 }
 
@@ -45,4 +56,5 @@ $duration: 0.5s;
   background-color: #535252;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  width: 30px;
 }

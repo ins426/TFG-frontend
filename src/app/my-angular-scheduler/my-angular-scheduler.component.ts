@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {
   ActionEventArgs,
   CellClickEventArgs, DragEventArgs, EventRenderedArgs,
-  ScheduleComponent, View
+  ScheduleComponent, TimeScaleModel, View
 } from '@syncfusion/ej2-angular-schedule';
 import {L10n} from '@syncfusion/ej2-base';
 import { loadCldr} from '@syncfusion/ej2-base';
@@ -51,7 +51,7 @@ L10n.load({
 export class MyAngularSchedulerComponent implements OnInit{
   public workWeekDays: number[] = [1,2,3,4,5];
   today = new Date()
-  public minDate = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
+  public minDate: undefined | Date;
   public mySelectedDate:Date = new Date(Date.now())
 
   @ViewChild('scheduleObj') calendar!: ScheduleComponent;
@@ -89,6 +89,8 @@ export class MyAngularSchedulerComponent implements OnInit{
   selectedPsychologist!:string
   selectedDay!: Date;
 
+  public timeScale: TimeScaleModel = { enable: true, interval: 15, slotCount: 1 };
+
   constructor(public appointmentService: AppointmentService, public userService: UserService) {}
 
 
@@ -102,6 +104,10 @@ export class MyAngularSchedulerComponent implements OnInit{
     //Get psychologist list
     this.selectedDay = new Date()
 
+    let userData = JSON.parse(localStorage.getItem("userData")!)
+
+    //this.minDate = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.setDate(this.today.getDate()+1))
+    console.log(userData['rol'])
     this.userService.getPsychologists().subscribe((psychologists) => {
       this.psychologistList = psychologists
     })
@@ -540,6 +546,10 @@ export class MyAngularSchedulerComponent implements OnInit{
         }
       }
     }
+  }
+
+  getMinorTime(date: any): string {
+    return date.getHours() + ":" + date.getMinutes()
   }
 
 }
