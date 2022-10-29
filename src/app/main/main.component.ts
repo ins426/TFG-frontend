@@ -16,7 +16,6 @@ export class MainComponent implements OnInit {
   }
 
   close(){
-    console.log("hola")
     this.drawercontainer?.close()
   }
 
