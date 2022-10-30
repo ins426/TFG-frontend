@@ -1,21 +1,19 @@
-import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   ActionEventArgs,
-  CellClickEventArgs, DragEventArgs, EventRenderedArgs,
+  CellClickEventArgs, EventRenderedArgs,
   ScheduleComponent, TimeScaleModel, View
 } from '@syncfusion/ej2-angular-schedule';
 import {L10n} from '@syncfusion/ej2-base';
 import { loadCldr} from '@syncfusion/ej2-base';
-import {MonthService, DayService, WeekService, EventSettingsModel, WorkWeekService,
-DragAndDropService} from '@syncfusion/ej2-angular-schedule';
+import {MonthService, DayService, WeekService, EventSettingsModel, WorkWeekService} from '@syncfusion/ej2-angular-schedule';
 import {FormControl} from "@angular/forms";
 import {AppointmentService} from "../../services/appointment.service";
 import {UserService} from "../../services/user.service";
-import {BehaviorSubject, finalize, Observable, startWith, switchMap, tap} from "rxjs";
+import {finalize, Observable, startWith, switchMap, tap} from "rxjs";
 import {User} from "../../models/user";
 import {AppointmentInterface} from "../../interfaces/appointment";
-import {MatCalendar} from "@angular/material/datepicker";
+import {SnackbarService} from "../../services/snackbar.service";
 
 declare var require: any;
 
@@ -37,14 +35,19 @@ L10n.load({
       today: 'Hoy',
       save: 'Guardar',
       saveButton: 'Guardar',
-      cancelButton: 'Cancelar'
+      cancelButton: 'Cancelar',
+      deleteContent: "Si eliminas esta cita se borrará permanentemente del calendario",
+      deleteEvent: "¿Eliminar cita?",
+      cancel: "Cancelar",
+      delete: "Eliminar",
+      deleteButton: "Eliminar"
     }
   }
 });
 
 @Component({
   selector: 'app-my-angular-scheduler',
-  providers: [DayService, WeekService,MonthService, WorkWeekService, DragAndDropService],
+  providers: [DayService, WeekService,MonthService, WorkWeekService],
   templateUrl: './my-angular-scheduler.component.html',
   styleUrls: ['./my-angular-scheduler.component.scss']
 })
@@ -59,7 +62,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   public startDate: Date | undefined;
   public endDate: Date | undefined;
 
-  public setViews: View[] = ['Day', 'Month', 'WorkWeek']
+  public setViews: View[] = ['Day', 'WorkWeek']
 
   public psychologistControl = new FormControl('')
   public patientControl = new FormControl('')
@@ -89,9 +92,12 @@ export class MyAngularSchedulerComponent implements OnInit{
   selectedPsychologist!:string
   selectedDay!: Date;
 
+  shownSnackBar = false
+
   public timeScale: TimeScaleModel = { enable: true, interval: 15, slotCount: 1 };
 
-  constructor(public appointmentService: AppointmentService, public userService: UserService) {}
+  constructor(public appointmentService: AppointmentService, public userService: UserService,
+              public snackbarService:SnackbarService) {}
 
 
   public onEventRendered(args: EventRenderedArgs): void {
@@ -106,8 +112,18 @@ export class MyAngularSchedulerComponent implements OnInit{
 
     let userData = JSON.parse(localStorage.getItem("userData")!)
 
-    //this.minDate = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.setDate(this.today.getDate()+1))
-    console.log(userData['rol'])
+    if(userData['rol'] == 'paciente'){
+      this.minDate = new Date()
+      this.minDate.setMonth(this.minDate.getMonth())
+      this.minDate.setDate(this.minDate.getDate()-1)
+      this.patientControl.disable()
+      this.psychologistControl.disable()
+    }
+
+    if(userData['rol'] == 'psicologo'){
+      this.psychologistControl.disable()
+    }
+
     this.userService.getPsychologists().subscribe((psychologists) => {
       this.psychologistList = psychologists
     })
@@ -220,6 +236,11 @@ export class MyAngularSchedulerComponent implements OnInit{
         if(!contains && this.availableStartAppointments[0]){
           this.startTimeControl.setValue(this.availableStartAppointments[0].toLocaleTimeString())
           this.selectedStartTime = this.availableStartAppointments[0]
+
+          if(!this.shownSnackBar){
+            this.snackbarService.openSnackBar()
+            this.shownSnackBar = true
+          }
         }
 
          if(this.availableStartAppointments[0] && (!this.openDialogPsychlogist ||
@@ -269,6 +290,7 @@ export class MyAngularSchedulerComponent implements OnInit{
     this.openDialogPsychlogist = undefined
     this.openDialogSelectedId = undefined
     this.openCreateDialogSelectedStartTime = undefined
+    this.shownSnackBar = false
 
     this.selectedDay = (new Date(args.data.StartTime))
 

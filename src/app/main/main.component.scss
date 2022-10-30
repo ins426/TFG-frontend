@@ -52,9 +52,10 @@ $duration: 0.5s;
   height: 50px;
   margin-top: 50px;
 }
-.example-sidenav-content{
+.sidenav-content{
   background-color: #535252;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   width: 30px;
+  cursor: pointer;
 }
