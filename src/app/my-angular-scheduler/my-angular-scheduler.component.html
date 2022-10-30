@@ -41,11 +41,11 @@
                        <mat-form-field>
                            <mat-select [formControl]="startTimeControl">
                                <mat-select-trigger>
-                                   {{ startTimeControl.value }}
+                                   {{ startTimeControl.value | time }}
                                </mat-select-trigger>
                                <mat-option *ngFor="let availableStartHour of availableStartAppointments"
                                            [value]="availableStartHour.toLocaleTimeString() ">
-                                   {{availableStartHour.toLocaleTimeString()}}
+                                   {{availableStartHour.toLocaleTimeString() | time}}
                                </mat-option>
                            </mat-select>
                        </mat-form-field>
@@ -55,11 +55,11 @@
                        <mat-form-field>
                            <mat-select [formControl]="endTimeControl"  *ngIf="availableEndAppointments">
                                <mat-select-trigger>
-                                   {{ endTimeControl.value }}
+                                   {{ endTimeControl.value | time }}
                                </mat-select-trigger>
                                <mat-option *ngFor="let availableEndHour of availableEndAppointments"
                                            [value]="availableEndHour.toLocaleTimeString() ">
-                                   {{availableEndHour.toLocaleTimeString()}}
+                                   {{availableEndHour.toLocaleTimeString() | time}}
                                </mat-option>
                            </mat-select>
                        </mat-form-field>

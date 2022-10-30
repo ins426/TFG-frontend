@@ -27,6 +27,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSelectModule} from '@angular/material/select';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatCardModule} from "@angular/material/card";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { TimePipe } from './time.pipe';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import {MatCardModule} from "@angular/material/card";
     CalendarComponent,
     MainComponent,
     SideBarComponent,
-      MyAngularSchedulerComponent
+      MyAngularSchedulerComponent,
+      TimePipe,
   ],
     imports: [
         BrowserModule,
@@ -56,7 +59,8 @@ import {MatCardModule} from "@angular/material/card";
         MatSidenavModule,
         MatSelectModule,
         MatChipsModule,
-        MatCardModule
+        MatCardModule,
+        MatSnackBarModule
     ],
   providers: [
       ActiveSessionGuard,

@@ -126,6 +126,33 @@
     }
   }
 
+  .e-btn.e-flat.e-primary, .e-css.e-btn.e-flat.e-primary{
+    color: #009FB7;
+  }
+
+  .e-btn.e-flat.e-primary:hover, .e-css.e-btn.e-flat.e-primary:hover{
+    color: #009FB7;
+    background-color: white;
+  }
+
+  .e-btn.e-flat:hover, .e-css.e-btn.e-flat:hover{
+    color: #696773;
+    background-color: white;
+  }
+
+  .e-btn.e-flat, .e-css.e-btn.e-flat{
+    color: #696773;
+  }
+
+  .e-event-delete{
+    color: #d64541 !important;
+  }
+
+  .e-btn.e-flat.e-primary:focus, .e-css.e-btn.e-flat.e-primary:focus{
+    background-color: white;
+    color: #d64541 !important;
+  }
+
 }
 
 .control-section{
@@ -145,3 +172,4 @@
 .form{
   margin-top: 15px;
 }
+
