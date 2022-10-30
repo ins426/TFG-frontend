@@ -7,18 +7,38 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FlexModule} from "@angular/flex-layout";
 import { LoginComponent } from './login/login.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { HomeComponent } from './home/home.component';
 import {ActiveSessionGuard} from "./login/active-session-guard";
 import {AuthGuard} from "./login/auth-guard";
 import {CookieService} from "ngx-cookie-service";
 import {AuthInterceptor} from "./login/auth.interceptor";
 import {MatInputModule} from "@angular/material/input";
+import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
+import {DropDownListModule} from '@syncfusion/ej2-angular-dropdowns'
+import {DateTimePickerModule} from '@syncfusion/ej2-angular-calendars'
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarComponent } from './calendar/calendar.component';
+import { MainComponent } from './main/main.component';
+import { SideBarComponent } from '../shared-components/side-bar/side-bar.component';
+import {MyAngularSchedulerComponent} from "./my-angular-scheduler/my-angular-scheduler.component";
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSelectModule} from '@angular/material/select';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatCardModule} from "@angular/material/card";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { TimePipe } from './time.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    CalendarComponent,
+    MainComponent,
+    SideBarComponent,
+      MyAngularSchedulerComponent,
+      TimePipe,
   ],
     imports: [
         BrowserModule,
@@ -28,7 +48,19 @@ import {MatInputModule} from "@angular/material/input";
         MatFormFieldModule,
         ReactiveFormsModule,
         HttpClientModule,
-        MatInputModule
+        MatInputModule,
+        ScheduleModule,
+        DateTimePickerModule,
+        DropDownListModule,
+        MatAutocompleteModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        BrowserAnimationsModule,
+        MatSidenavModule,
+        MatSelectModule,
+        MatChipsModule,
+        MatCardModule,
+        MatSnackBarModule
     ],
   providers: [
       ActiveSessionGuard,
@@ -38,7 +70,8 @@ import {MatInputModule} from "@angular/material/input";
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+      MatDatepickerModule
   ],
   bootstrap: [AppComponent]
 })
