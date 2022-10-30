@@ -1,0 +1,17 @@
+<div fxLayout="row" class="content">
+    <mat-drawer-container #drawercontainer  [hasBackdrop]="true" class="sidenav-menu-wrapper"
+                          [class.extend]="drawer.opened"
+                          autosize (backdropClick)="close()">
+        <mat-drawer #drawer class="sidenav-menu" mode="side" >
+            <app-side-bar></app-side-bar>
+        </mat-drawer>
+      <div class="sidenav-content">
+          <a class="arrow-wrapper" (click)="drawer.toggle()" fxLayoutAlign="center center">
+             <img src="assets/images/right-arrow.png" class="arrow-icon"  [class.open]="drawer.opened">
+          </a>
+      </div>
+    </mat-drawer-container>
+    <div class="right-content" [class.sidenav-opened]="drawer.opened">
+        <router-outlet></router-outlet>
+    </div>
+</div>

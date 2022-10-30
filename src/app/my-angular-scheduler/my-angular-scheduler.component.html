@@ -1,0 +1,86 @@
+<div class="control-section">
+    <ejs-schedule #scheduleObj width="auto" height="auto" [workDays]='workWeekDays' locale="es"
+                  [eventSettings]="eventSettings"  [minDate]="minDate"
+                   [showQuickInfo]="false" (popupOpen)="onPopupOpen($event)" (popupClose)="onPopupClose($event)"
+                  [views]="setViews" [currentView]="setViews[2]" startHour='10:00' endHour='20:15'
+                  [selectedDate]="mySelectedDate" (cellClick)="onCellClick($event)"
+                  (actionBegin)="onActionBegin($event)"
+    (eventRendered)="onEventRendered($event)" [timeScale]="timeScale">
+        <ng-template #editorTemplate let-data>
+            <div class="form" fxLayout="row" fxLayoutAlign="center">
+               <div class="form-left-part">
+                  <div fxLayout="column">
+                      <mat-label>Psicólogo/a</mat-label>
+                      <mat-form-field>
+                          <mat-select  #select [formControl]="psychologistControl" >
+                              <mat-select-trigger>
+                                  {{  displayDate(select.value) }}
+                              </mat-select-trigger>
+                              <mat-option  *ngFor="let psychologist of psychologistList" [value]="psychologist._id">
+                                  {{ psychologist.name }} {{ psychologist.surname }}
+                              </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                  </div>
+                   <div fxLayout="column">
+                       <mat-label>Paciente</mat-label>
+                       <mat-form-field>
+                           <mat-select  #selectPatient [formControl]="patientControl" >
+                               <mat-select-trigger>
+                                   {{  displayPatient(selectPatient.value) }}
+                               </mat-select-trigger>
+                               <mat-option  *ngFor="let patient of patientsList" [value]="patient._id">
+                                   {{ patient.name }} {{ patient.surname }}
+                               </mat-option>
+                           </mat-select>
+                       </mat-form-field>
+                   </div>
+                   <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="10px" >
+                    <div fxLayout="column">
+                       <mat-label>Hora de inicio de la cita</mat-label>
+                       <mat-form-field>
+                           <mat-select [formControl]="startTimeControl">
+                               <mat-select-trigger>
+                                   {{ startTimeControl.value | time }}
+                               </mat-select-trigger>
+                               <mat-option *ngFor="let availableStartHour of availableStartAppointments"
+                                           [value]="availableStartHour.toLocaleTimeString() ">
+                                   {{availableStartHour.toLocaleTimeString() | time}}
+                               </mat-option>
+                           </mat-select>
+                       </mat-form-field>
+                   </div>
+                   <div fxLayout="column">
+                       <mat-label>Hora de fin de la cita</mat-label>
+                       <mat-form-field>
+                           <mat-select [formControl]="endTimeControl"  *ngIf="availableEndAppointments">
+                               <mat-select-trigger>
+                                   {{ endTimeControl.value | time }}
+                               </mat-select-trigger>
+                               <mat-option *ngFor="let availableEndHour of availableEndAppointments"
+                                           [value]="availableEndHour.toLocaleTimeString() ">
+                                   {{availableEndHour.toLocaleTimeString() | time}}
+                               </mat-option>
+                           </mat-select>
+                       </mat-form-field>
+                   </div>
+                   </div>
+                   <div fxLayout="column">
+                    <mat-label>Observaciones</mat-label>
+                    <mat-form-field appearance="fill">
+                        <textarea matInput
+                                cdkTextareaAutosize
+                                #autosize="cdkTextareaAutosize"
+                                cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="5" [formControl]="observationsControl">
+                        </textarea>
+                    </mat-form-field>
+                </div>
+               </div>
+            </div>
+        </ng-template>
+        <ng-template #timeScaleMinorSlotTemplate let-data>
+        <div class="minorTime">{{getMinorTime(data.date)}}</div>
+    </ng-template>
+    </ejs-schedule>
+</div>
