@@ -41,6 +41,11 @@ export class User{
    */
   @autoserializeAs(() => String) CategoryColor: string;
 
+  /**
+   * User's Psychologist
+   */
+  @autoserializeAs(() => String) psychologist?: User;
+
   constructor(
       _id:number|undefined,
       name:string,

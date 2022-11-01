@@ -43,7 +43,8 @@ export class SideBarComponent implements OnInit {
     this.routeActive = this.router.url
   }
 
-  redirect(path:string){
-    this.router.navigate([path])
+  async redirect(path: string) {
+    await this.router.navigate([path])
+    this.routeActive = this.router.url
   }
 }

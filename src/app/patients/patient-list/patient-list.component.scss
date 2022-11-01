@@ -1,0 +1,99 @@
+.patient-list-container{
+  width: 100%;
+}
+
+table{
+ width: 63em;
+  overflow: scroll;
+  height: 40em;
+  background-color: transparent;
+}
+
+::ng-deep{
+  .mat-paginator{
+    background-color: transparent;
+  }
+
+  @media (max-width: 600px) {
+    table.mat-table{
+      max-width: 600px;
+    }
+  }
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+th, td {
+  overflow: auto;
+  width: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.operations-cell{
+  text-overflow: clip;
+}
+
+
+h1{
+  margin-left: 100px;
+  color: #666;
+  font-weight:normal;
+}
+
+.table-container{
+  width: 100%;
+  margin-top: 4em;
+}
+
+.profile-image{
+  width: 30px;
+  height: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.operations-image{
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  padding: 10px;
+}
+
+.operations-image:hover{
+  background-color: #009FB7;
+  border-radius: 10px;
+}
+
+.patients-header{
+  width: inherit;
+}
+
+button{
+  width: 300px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #009FB7;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  margin-right: 150px;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #007880;
+  transition: .2s;
+}
+
+@media (max-width: 600px) {
+    button{
+      margin-right: 0px;
+    }
+    h1{
+      margin-left:0px;
+    }
+  }

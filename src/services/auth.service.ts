@@ -34,6 +34,12 @@ export class AuthService{
     window.localStorage.removeItem('userData')
   }
 
+  checkToken(token:string){
+    this.http.post('/api/check-token',{token:token}).subscribe(response =>{
+      localStorage.setItem('userData',JSON.stringify(response))
+    })
+  }
+
 
   loadUserFromLocalStorage():UserProfile {
     if(this.userProfile.value.id == -1){

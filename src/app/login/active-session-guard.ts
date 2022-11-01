@@ -11,7 +11,6 @@ export class ActiveSessionGuard implements CanActivate {
         if (localStorage.getItem('userData')) {
             this.router.navigate(['/']);
         }else{
-            console.log("adios")
         }
         return true;
     }

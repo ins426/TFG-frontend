@@ -6,14 +6,15 @@
     <div fxLayout="column" fxLayoutAlign="space-between center" class="bottom-sidebar-wrapper">
         <div class="menu-wrapper">
             <div *ngFor="let element of sideBarElements" class="option" fxLayout="row"
-                 [class.selected]="element.route === routeActive" fxLayoutAlign="none center"
+                 [class.selected]="element.route === routeActive" [class.patients]="element.route=='/pacientes'"
+                 fxLayoutAlign="none center"
                  (click)="redirect(element.route)">
                 <div class="icon-wrapper">
                   <img class="icon {{element.name}}" src="{{element.icon}}">
               </div>
                 <div class="name-wrapper">
                   {{ element.name }}
-              </div>
+                </div>
             </div>
         </div>
         <div class="footer-plant">
