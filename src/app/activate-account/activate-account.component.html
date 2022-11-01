@@ -1,0 +1,19 @@
+<div fxLayout="column" fxLayoutAlign="center center" class="activation-container">
+    <h1>Activación de cuenta</h1>
+    <form [formGroup]="activationForm" (ngSubmit)="onSubmit()" class="form-container" fxLayout="column"
+          fxLayoutAlign="center center">
+        <div fxLayoutGap="50px"  fxLayoutAlign="center center" fxLayout="column">
+            <div fxLayout="column" class="input-container">
+                <mat-label>Contraseña</mat-label>
+                <input formControlName="password" type="password"
+                       placeholder="Introduce una contraseña" required email/>
+            </div>
+            <div fxLayout="column">
+                <mat-label>Confirmar contraseña</mat-label>
+                <input formControlName="repeat_password" type="password"
+                       placeholder="Introduce de nuevo tu contraseña" required>
+            </div>
+        </div>
+        <button class="primary-button" type="submit">Activar cuenta</button>
+    </form>
+</div>

@@ -1,0 +1,51 @@
+<h2>Añadir Psicólogos</h2>
+<div fxLayoutAlign="center center">
+  <div fxLayout="column" class="form-container" fxLayoutAlign="center center">
+    <form (ngSubmit)="submit()" class="form" fxLayoutAlign="center center" fxLayout="column" >
+      <div class="field-container" fxLayout="column">
+        <mat-label>Nombre</mat-label>
+        <mat-form-field class="example-full-width" appearance="fill">
+        <input [formControl]="nameControl" matInput placeholder="Introduce el nombre del psicólogo/a">
+        <mat-error>
+          Por favor, introduce un nombre válido
+        </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="field-container" fxLayout="column">
+        <mat-label>Apellidos</mat-label>
+        <mat-form-field class="example-full-width" appearance="fill">
+        <input  [formControl]="surnameControl" matInput placeholder="Introduce el nombre del psicólogo/a">
+        <mat-error>
+          Por favor, introduce apellidos válidos
+        </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="field-container" fxLayout="column">
+        <mat-label>Email</mat-label>
+        <mat-form-field class="example-full-width" appearance="fill">
+        <input [formControl]="emailControl" matInput type="email" placeholder="Introduce el email del psicólogo/a">
+        <mat-error>
+          Por favor, introduce un email válido
+        </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="field-container" fxLayout="column" >
+        <mat-label>Color asignado al psicólogo/a</mat-label>
+          <mat-form-field>
+            <input matInput [ngxMatColorPicker]="picker" [formControl]="colorControl">
+            <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+            <ngx-mat-color-picker #picker></ngx-mat-color-picker>
+              <mat-error>
+                Por favor, seleccione un color
+              </mat-error>
+          </mat-form-field>
+    </div>
+        <div class="button-container" fxLayoutAlign="end">
+            <button class="cancel-button" (click)="close()">CANCELAR</button>
+            <button type="submit" class="save-button">AÑADIR</button>
+        </div>
+    </form>
+</div>
+</div>
+
+

@@ -1,0 +1,52 @@
+<h2>Editar Paciente</h2>
+<div fxLayoutAlign="center center">
+  <div fxLayout="column" class="form-container" fxLayoutAlign="center center">
+    <form (ngSubmit)="submit()" class="form" fxLayoutAlign="center center" fxLayout="column" >
+      <div class="field-container" fxLayout="column">
+        <mat-label>Nombre</mat-label>
+        <mat-form-field class="example-full-width" appearance="fill">
+        <input [formControl]="nameControl" matInput placeholder="Introduce el nombre del paciente">
+        <mat-error>
+          Por favor, introduce un nombre válido
+        </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="field-container" fxLayout="column">
+        <mat-label>Apellidos</mat-label>
+        <mat-form-field class="example-full-width" appearance="fill">
+        <input  [formControl]="surnameControl" matInput placeholder="Introduce el nombre del paciente">
+        <mat-error>
+          Por favor, introduce apellidos válidos
+        </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="field-container" fxLayout="column">
+        <mat-label>Email</mat-label>
+        <mat-form-field class="example-full-width" appearance="fill">
+        <input [formControl]="emailControl" matInput type="email" placeholder="Introduce el email del paciente">
+        <mat-error>
+          Por favor, introduce un email válido
+        </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="field-container" fxLayout="column" >
+        <mat-label>Psicólogo/a</mat-label>
+        <mat-form-field>
+            <mat-select [formControl]="psychologistControl" >
+                <mat-option  *ngFor="let psychologist of psychologistList" [value]="psychologist._id">
+                    {{ psychologist.name }} {{ psychologist.surname }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="psychologistControl.hasError('required')">
+                Por favor, selecciona un psicólogo
+            </mat-error>
+        </mat-form-field>
+    </div>
+        <div class="button-container" fxLayoutAlign="end">
+            <button class="cancel-button" (click)="close()">CANCELAR</button>
+            <button type="submit" class="save-button">GUARDAR</button>
+        </div>
+    </form>
+</div>
+</div>
+
