@@ -9,8 +9,8 @@ export class ActiveSessionGuard implements CanActivate {
 
     public canActivate(_route: ActivatedRouteSnapshot): boolean {
         if (localStorage.getItem('userData')) {
+            localStorage.removeItem('userData')
             this.router.navigate(['/']);
-        }else{
         }
         return true;
     }

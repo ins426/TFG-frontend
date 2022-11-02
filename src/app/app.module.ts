@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {FlexModule} from "@angular/flex-layout";
+import {FlexLayoutModule, FlexModule} from "@angular/flex-layout";
 import { LoginComponent } from './login/login.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {ActiveSessionGuard} from "./login/active-session-guard";
@@ -21,7 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './calendar/calendar.component';
 import { MainComponent } from './main/main.component';
-import { SideBarComponent } from '../shared-components/side-bar/side-bar.component';
+import { SideBarComponent } from './shared-components/side-bar/side-bar.component';
 import {MyAngularSchedulerComponent} from "./my-angular-scheduler/my-angular-scheduler.component";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSelectModule} from '@angular/material/select';
@@ -42,6 +42,10 @@ import { PsychologistListComponent } from './psychologists/psychologist-list/psy
 import {MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS} from "@angular-material-components/color-picker";
 import { CreatePsychologistFormComponent } from './psychologists/create-psychologist-form/create-psychologist-form.component';
 import { EditPsychologistFormComponent } from './psychologists/edit-psychologist-form/edit-psychologist-form.component';
+import { DeletePsychologistDialogComponent } from './psychologists/delete-psychologist-dialog/delete-psychologist-dialog.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +65,10 @@ import { EditPsychologistFormComponent } from './psychologists/edit-psychologist
       PsychologistListComponent,
       CreatePsychologistFormComponent,
       EditPsychologistFormComponent,
+      DeletePsychologistDialogComponent,
+      ProfileComponent,
+      ForgotPasswordComponent,
+      RecoverPasswordComponent,
   ],
     imports: [
         BrowserModule,
@@ -86,7 +94,8 @@ import { EditPsychologistFormComponent } from './psychologists/edit-psychologist
         MatTableModule,
         MatPaginatorModule,
         MatDialogModule,
-        NgxMatColorPickerModule
+        NgxMatColorPickerModule,
+        FlexLayoutModule
     ],
   providers: [
       { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },

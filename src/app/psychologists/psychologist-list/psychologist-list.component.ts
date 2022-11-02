@@ -9,6 +9,7 @@ import {EditPatientFormComponent} from "../../patients/edit-patient-form/edit-pa
 import {DeletePatientDialogComponent} from "../../patients/delete-patient-dialog/delete-patient-dialog.component";
 import {CreatePsychologistFormComponent} from "../create-psychologist-form/create-psychologist-form.component";
 import {EditPsychologistFormComponent} from "../edit-psychologist-form/edit-psychologist-form.component";
+import {DeletePsychologistDialogComponent} from "../delete-psychologist-dialog/delete-psychologist-dialog.component";
 
 @Component({
   selector: 'app-psychologist-list',
@@ -51,7 +52,7 @@ export class PsychologistListComponent implements OnInit {
   }
 
   openDeleteDialog(element:User){
-    let dialogRef = this.dialog.open(DeletePatientDialogComponent,{
+    let dialogRef = this.dialog.open(DeletePsychologistDialogComponent,{
       width:'500px',
       height: '250px'
     })

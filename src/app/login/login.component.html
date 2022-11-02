@@ -1,5 +1,5 @@
 <div class="login-container" fxLayout="row" fxLayoutGap="228px">
-    <div class="image-container" fxLayout="column" fxLayoutAlign="_ center" fxLayoutGap="45px">
+    <div class="image-container" fxLayout="column" fxLayoutAlign="_ center" fxLayoutGap="45px" fxHide.lt-sm="true">
         <div>
             <img class="logo-image" src="assets/images/logo.png">
         </div>
@@ -8,11 +8,11 @@
             <p>365 días en una página</p>
         </div>
     </div>
-    <div class="login-form-container">
+    <div class="login-form-container" fxLayoutAlign.lt-sm="none center" fxLayout="column">
         <h1>Iniciar sesión</h1>
-        <div class="form-login" fxLayout="column">
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <div fxLayoutGap="50px" >
+        <div class="form-login" fxLayout="column" fxLayoutAlign="center center">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutAlign.lt-sm="center center" >
+                <div fxLayoutGap="50px" fxLayoutGap.lt-sm="20px" class="inputs" fxLayout="column" fxLayoutAlign.lt-sm="center center" >
                     <div fxLayout="column" class="input-container">
                         <mat-label>Correo electrónico</mat-label>
                         <input formControlName="email"
@@ -22,7 +22,9 @@
                         <mat-label>Contraseña</mat-label>
                         <input formControlName="password" type="password"
                                placeholder="Introduce tu contraseña" required>
-                        <div fxLayoutAlign="end" class="forgot-password-container"><p>¿Olvidaste tu contraseña?</p></div>
+                        <div fxLayoutAlign="end" fxLayoutAlign.lt-sm="center" class="forgot-password-container">
+                            <a href="/olvidar-contrasenia"><p>¿Olvidaste tu contraseña?</p></a>
+                        </div>
                     </div>
                 </div>
                 <button class="primary-button" type="submit">Iniciar sesión</button>

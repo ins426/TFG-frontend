@@ -10,13 +10,15 @@ import {CreatePatientFormComponent} from "../app/patients/create-patient-form/cr
 import {
   CreatePsychologistFormComponent
 } from "../app/psychologists/create-psychologist-form/create-psychologist-form.component";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http: HttpClient, private snackbarService:SnackbarService) { }
+  constructor(private http: HttpClient, private snackbarService:SnackbarService,
+              private router:Router) { }
 
   getPsychologists(): Observable<Array<User>>{
     return (this.http.get<IJsonArray>('/api/psychologists').pipe(
@@ -79,6 +81,19 @@ export class UserService {
   deleteUser(id:string){
     this.http.delete('/api/user/'+id).subscribe(()=>{
           location.reload()
+    })
+  }
+
+  changePassword(newPassword:string){
+    this.http.put('/api/change-password',{newPassword:newPassword}).subscribe(()=>{
+      localStorage.removeItem('userData')
+      location.reload()
+    })
+  }
+
+  getPassword(email:string){
+    this.http.put('/api/forget-password',{email:email}).subscribe(()=>{
+      this.router.navigateByUrl('/login')
     })
   }
 }
