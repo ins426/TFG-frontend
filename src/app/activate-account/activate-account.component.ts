@@ -35,8 +35,6 @@ export class ActivateAccountComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log(this.activationForm.get('password'))
-    console.log(this.activationForm.get('repeat_password'))
     if(this.activationForm.get('password')?.value === this.activationForm.get('repeat_password')?.value){
       let userData = JSON.parse(localStorage.getItem('userData')!)
       let email = userData['email']
