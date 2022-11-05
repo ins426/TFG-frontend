@@ -1,0 +1,53 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+   <h1>Perfil</h1>
+    <img class="cross" (click)="close()" src="assets/images/cross.png">
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between" fxLayout.lt-sm="column">
+    <div fxLayout="column">
+          <div fxLayout="column">
+            <mat-label>Nombre</mat-label>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input [disabled]="true" matInput [value]="name">
+            </mat-form-field>
+        </div>
+        <div fxLayout="column">
+            <mat-label>Apellidos</mat-label>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input [disabled]="true" matInput [value]="surname">
+            </mat-form-field>
+        </div>
+        <div fxLayout="column">
+             <mat-label>Correo electrónico</mat-label>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input [disabled]="true" matInput [value]="email">
+            </mat-form-field>
+        </div>
+        <div fxLayout="column">
+            <mat-label>Rol</mat-label>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input [disabled]="true" matInput [value]="role">
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="column" class="change-password">
+        <form fxLayout="column" (ngSubmit)="changePassword()">
+            <mat-label>Nueva contraseña</mat-label>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input type="password" matInput [formControl]="passwordControl">
+                <mat-error>
+                    Por favor, introduce una contraseña
+                </mat-error>
+            </mat-form-field>
+            <mat-label>Confirmar contraseña</mat-label>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input type="password" matInput [formControl]="repeatPasswordControl">
+                <mat-error>
+                    Por favor, introduce la confirmación de contraseña
+                </mat-error>
+            </mat-form-field>
+            <div class="button-container">
+                <button type="submit" class="save-button">Cambiar contraseña</button>
+            </div>
+        </form>
+    </div>
+</div>

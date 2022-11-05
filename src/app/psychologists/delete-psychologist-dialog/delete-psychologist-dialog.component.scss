@@ -1,0 +1,24 @@
+h1{
+  font-weight: normal;
+}
+
+.button-container{
+    width: 100%;
+    margin-top: 25px;
+}
+
+button{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.save-button{
+  color:red;
+}
+
+.cancel-button{
+  border: none;
+  color: #696773;
+  margin-right: 2px;
+}
