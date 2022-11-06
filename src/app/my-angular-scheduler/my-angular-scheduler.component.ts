@@ -63,6 +63,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   public endDate: Date | undefined;
 
   public setViews: View[] = ['Day', 'WorkWeek']
+  public defaultView = this.setViews[1]
 
   public psychologistControl = new FormControl('')
   public patientControl = new FormControl('')
@@ -94,6 +95,9 @@ export class MyAngularSchedulerComponent implements OnInit{
 
   shownSnackBar = false
 
+  startHour = '10:00'
+  endHour = '20:15'
+
   public timeScale: TimeScaleModel = { enable: true, interval: 15, slotCount: 1 };
 
   constructor(public appointmentService: AppointmentService, public userService: UserService,
@@ -106,8 +110,6 @@ export class MyAngularSchedulerComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    //TODO Aqui segun el rol del usuario se obtendran todos los psicologos, el psicologo que es o el psicologo del paciente
-    //Get psychologist list
     this.selectedDay = new Date()
 
     let userData = JSON.parse(localStorage.getItem("userData")!)
@@ -280,9 +282,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   }
 
   public async onPopupOpen(args: { type: string; data: { Patient: any, StartTime: Date, Id: number, EndTime: Date,
-      _id: number, Subject:string, id_psychologist:number, id_patient:number, Observations:string },element:any; }) {
-    //Adjust so the value is the correspondent
-    //let fecha = String(args.data.StartTime)
+      _id: number, Subject:string, id_psychologist:number, id_patient:number, Observations:string } }) {
     this.availableEndAppointments = []
     this.availableStartAppointments = []
     this.openModifyDialogSelectedStartTime = undefined
@@ -341,7 +341,7 @@ export class MyAngularSchedulerComponent implements OnInit{
   }
 
   public onPopupClose(args: { type: string; data: { Patient: any, StartTime: Date, Id: number, EndTime: Date,
-      _id: number, Subject:string, id_psychologist:number,id_patient:number, CategoryColor:any, observations:string }; element:any }) {
+      _id: number, Subject:string, id_psychologist:number,id_patient:number, CategoryColor:any, observations:string } }) {
 
     if (args.type === 'Editor' && args.data) {
       if(this.openDialogSelectedId){
@@ -372,7 +372,6 @@ export class MyAngularSchedulerComponent implements OnInit{
         if(this.eventSettings?.dataSource instanceof Array){
           for(let i = 0, a = this.eventSettings.dataSource; i < a.length;++i){
             let event = a[i]
-            //TODO Complete with the rest of fields
             if(appointmentRecords[this.openDialogSelectedId-1]._id == event['_id']){
               event['Subject'] = args.data.Subject
               event['CategoryColor'] = psychologist!.CategoryColor

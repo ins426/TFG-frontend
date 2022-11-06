@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import {PsychologistInterface} from "../interfaces/user-interface";
 import {HttpClient} from "@angular/common/http";
-import {finalize, map, Observable, switchMap} from "rxjs";
-import { Deserialize, DeserializeArray, IJsonArray, IJsonObject, Serialize } from 'dcerialize';
+import {finalize, map, Observable} from "rxjs";
+import { DeserializeArray, IJsonArray } from 'dcerialize';
 import {User} from "../models/user";
 import {SnackbarService} from "./snackbar.service";
 import {MatDialogRef} from "@angular/material/dialog";

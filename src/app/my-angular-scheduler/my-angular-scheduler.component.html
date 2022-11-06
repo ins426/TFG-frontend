@@ -2,7 +2,7 @@
     <ejs-schedule #scheduleObj width="auto" height="auto" [workDays]='workWeekDays' locale="es"
                   [eventSettings]="eventSettings"  [minDate]="minDate"
                    [showQuickInfo]="false" (popupOpen)="onPopupOpen($event)" (popupClose)="onPopupClose($event)"
-                  [views]="setViews" [currentView]="setViews[2]" startHour='10:00' endHour='20:15'
+                  [views]="setViews" [currentView]="defaultView" startHour={{startHour}} endHour={{endHour}}
                   [selectedDate]="mySelectedDate" (cellClick)="onCellClick($event)"
                   (actionBegin)="onActionBegin($event)"
     (eventRendered)="onEventRendered($event)" [timeScale]="timeScale">
