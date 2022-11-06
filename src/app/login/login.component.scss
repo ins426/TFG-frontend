@@ -39,10 +39,6 @@ h1{
     margin-left: 14px;
     margin-bottom: 5px;
   }
-
-  mat-form-field{
-
-  }
 }
 
 input{
@@ -75,6 +71,10 @@ button:hover {
 .forgot-password-container{
   font-size: 15px;
   color: #009FB7;
+  a{
+     color: #009FB7;
+    text-decoration: none;
+  }
 }
 
 .forgot-password-container:hover{
@@ -87,4 +87,23 @@ button:hover {
 
 .login-container{
   height: 100%;
+}
+
+@media (max-width: 600px) {
+  input {
+    width: 300px;
+    margin-right: 0px;
+  }
+
+  button{
+    width: 300px;
+  }
+
+  .form-login{
+    width: 300px;
+  }
+
+  .login-form-container{
+    width: 500px;
+  }
 }

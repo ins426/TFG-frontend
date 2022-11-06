@@ -4,9 +4,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {FlexModule} from "@angular/flex-layout";
+import {FlexLayoutModule, FlexModule} from "@angular/flex-layout";
 import { LoginComponent } from './login/login.component';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {ActiveSessionGuard} from "./login/active-session-guard";
 import {AuthGuard} from "./login/auth-guard";
 import {CookieService} from "ngx-cookie-service";
@@ -21,7 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarComponent } from './calendar/calendar.component';
 import { MainComponent } from './main/main.component';
-import { SideBarComponent } from '../shared-components/side-bar/side-bar.component';
+import { SideBarComponent } from './shared-components/side-bar/side-bar.component';
 import {MyAngularSchedulerComponent} from "./my-angular-scheduler/my-angular-scheduler.component";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSelectModule} from '@angular/material/select';
@@ -29,6 +29,23 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatCardModule} from "@angular/material/card";
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { TimePipe } from './time.pipe';
+import { ActivateAccountComponent } from './activate-account/activate-account.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PatientListComponent } from './patients/patient-list/patient-list.component';
+import {MatTableModule} from "@angular/material/table";
+import { MatPaginatorModule} from "@angular/material/paginator";
+import { CreatePatientFormComponent } from './patients/create-patient-form/create-patient-form.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { EditPatientFormComponent } from './patients/edit-patient-form/edit-patient-form.component';
+import { DeletePatientDialogComponent } from './patients/delete-patient-dialog/delete-patient-dialog.component';
+import { PsychologistListComponent } from './psychologists/psychologist-list/psychologist-list.component';
+import {MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS} from "@angular-material-components/color-picker";
+import { CreatePsychologistFormComponent } from './psychologists/create-psychologist-form/create-psychologist-form.component';
+import { EditPsychologistFormComponent } from './psychologists/edit-psychologist-form/edit-psychologist-form.component';
+import { DeletePsychologistDialogComponent } from './psychologists/delete-psychologist-dialog/delete-psychologist-dialog.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +56,19 @@ import { TimePipe } from './time.pipe';
     SideBarComponent,
       MyAngularSchedulerComponent,
       TimePipe,
+      ActivateAccountComponent,
+      PageNotFoundComponent,
+      PatientListComponent,
+      CreatePatientFormComponent,
+      EditPatientFormComponent,
+      DeletePatientDialogComponent,
+      PsychologistListComponent,
+      CreatePsychologistFormComponent,
+      EditPsychologistFormComponent,
+      DeletePsychologistDialogComponent,
+      ProfileComponent,
+      ForgotPasswordComponent,
+      RecoverPasswordComponent,
   ],
     imports: [
         BrowserModule,
@@ -60,9 +90,15 @@ import { TimePipe } from './time.pipe';
         MatSelectModule,
         MatChipsModule,
         MatCardModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        NgxMatColorPickerModule,
+        FlexLayoutModule
     ],
   providers: [
+      { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },
       ActiveSessionGuard,
       AuthGuard,
       CookieService,

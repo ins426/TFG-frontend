@@ -6,6 +6,13 @@ import {AuthGuard} from "./login/auth-guard";
 import {MainComponent} from "./main/main.component";
 import {CalendarComponent} from "./calendar/calendar.component";
 import {MyAngularSchedulerComponent} from "./my-angular-scheduler/my-angular-scheduler.component";
+import {ActivateAccountComponent} from "./activate-account/activate-account.component";
+import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
+import {PatientListComponent} from "./patients/patient-list/patient-list.component";
+import {PsychologistListComponent} from "./psychologists/psychologist-list/psychologist-list.component";
+import {RoleGuard} from "./login/role.guard";
+import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
+import {RecoverPasswordComponent} from "./recover-password/recover-password.component";
 
 const routes: Routes = [
     {
@@ -17,15 +24,53 @@ const routes: Routes = [
         {path: '', pathMatch:'full', redirectTo:"/calendario"},
         {
           path:'calendario',
-          component: CalendarComponent
+          component: CalendarComponent,
+            canActivate: [RoleGuard],
+            data: {
+                roles: ['administrador','psicologo','paciente']
+            },
         },
+          {
+              path:'pacientes',
+              component:PatientListComponent,
+              canActivate: [RoleGuard],
+              data: {
+                roles: ['administrador']
+              },
+          },
+          {
+              path:'psicologos',
+              component:PsychologistListComponent,
+              canActivate: [RoleGuard],
+              data: {
+                roles: ['administrador']
+              },
+          }
       ]
-  },
-  {
+    },
+    {
     path: 'login',
     component: LoginComponent,
-    canActivate: [ActiveSessionGuard]
-  }
+    canActivate: [ActiveSessionGuard],
+    },
+    {
+        path:'olvidar-contrasenia',
+        component:ForgotPasswordComponent,
+        canActivate: [ActiveSessionGuard],
+    },
+    {
+        path:'activar-cuenta',
+        component: ActivateAccountComponent
+    },
+    {
+        path:'restablecer-contrasenia',
+        component: RecoverPasswordComponent
+    },
+    {
+        path: '**',
+        pathMatch: 'full',
+        component: PageNotFoundComponent
+    },
 ];
 
 @NgModule({

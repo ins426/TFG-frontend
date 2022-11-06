@@ -1,0 +1,91 @@
+:host{
+  ::ng-deep {
+  .mat-form-field-underline {
+    display: none;
+  }
+  .mat-form-field-flex{
+    background-color: white;
+    color: black;
+    border: 1px solid #666;
+    border-radius: 10px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+  }
+
+  mat-label{
+    margin-bottom: 7px;
+    color:#666;
+  }
+
+  .mat-form-field-appearance-fill .mat-form-field-flex{
+    background-color: white;
+  }
+
+  .mat-form-field-appearance-fill .mat-form-field-flex{
+    border-radius: 10px;
+  }
+
+  .mat-select{
+    padding-bottom: 5px;
+    padding-top:5px;
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-label{
+    color:#666;
+  }
+
+    .mat-primary .mat-option.mat-selected:not(.mat-option-disabled){
+    color:  #E94F37;
+  }
+
+
+  .mat-select-trigger{
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .mat-form-field-wrapper{
+    width: 300px;
+  }
+}
+.form-container{
+  width: 100%;
+  font-size: 14px;
+}
+
+h2{
+  font-weight: normal;
+}
+  .form{
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .button-container{
+    width: 100%;
+    margin-top: 17px;
+  }
+
+  button{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .save-button{
+    color:#009FB7;
+  }
+
+  .save-button:hover{
+    color: #007880;
+    transition: .2s;
+  }
+
+  .cancel-button{
+    color: #696773;
+    margin-right: 2px;
+  }
+
+  .field-container{
+    margin-bottom: 15px;
+  }
+}

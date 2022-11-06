@@ -17,7 +17,6 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, {url}: RouterStateSnapshot
     ): boolean{
         let userLogged = false
-        //TO-DO Change this to cookies
         if(localStorage.getItem('userData')){
             userLogged = true
         }else{
