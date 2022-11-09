@@ -1,10 +1,9 @@
-FROM node:18.12-alpine3.15
+FROM node:18.12-alpine
 
 WORKDIR /usr/src/app
 
 COPY package.json .
 
-RUN npm cache clean --force
 RUN npm i
 
 COPY . .

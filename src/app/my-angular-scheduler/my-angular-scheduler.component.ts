@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   ActionEventArgs,
-  CellClickEventArgs, EventRenderedArgs,
+  CellClickEventArgs, EventClickArgs, EventRenderedArgs,
   ScheduleComponent, TimeScaleModel, View
 } from '@syncfusion/ej2-angular-schedule';
 import {L10n} from '@syncfusion/ej2-base';
@@ -419,6 +419,10 @@ export class MyAngularSchedulerComponent implements OnInit{
 
   onCellClick(args: CellClickEventArgs): void {
     this.calendar.openEditor(args, 'Add');
+  }
+
+  onEventClick(args: EventClickArgs): void {
+      this.calendar.openEditor(args.event, 'Save');
   }
 
   getAvailableStartHours(psychologist:string |null): Observable<Array<Date>>{

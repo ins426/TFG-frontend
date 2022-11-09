@@ -4,7 +4,8 @@
                    [showQuickInfo]="false" (popupOpen)="onPopupOpen($event)" (popupClose)="onPopupClose($event)"
                   [views]="setViews" [currentView]="defaultView" startHour={{startHour}} endHour={{endHour}}
                   [selectedDate]="mySelectedDate" (cellClick)="onCellClick($event)"
-                  (actionBegin)="onActionBegin($event)"
+                  (actionBegin)="onActionBegin($event)" (cellClick)="onCellClick($event)"
+                  (eventClick)="onEventClick($event)"
     (eventRendered)="onEventRendered($event)" [timeScale]="timeScale">
         <ng-template #editorTemplate let-data>
             <div class="form" fxLayout="row" fxLayoutAlign="center">
