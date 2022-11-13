@@ -33,8 +33,8 @@ export class AppointmentService {
         map((availableAppointments) => DeserializeArray(availableAppointments, () => Date))))
   }
 
-  postAppointment(newAppointment: AppointmentInterface): void{
-    this.http.post<AppointmentInterface>('/api/appointment',newAppointment).subscribe()
+  postAppointment(newAppointment: AppointmentInterface): Observable<AppointmentInterface>{
+    return this.http.post<AppointmentInterface>('/api/appointment',newAppointment)
   }
 
   modifyAppointment(updatedAppointment: AppointmentInterface,id:number):void{
