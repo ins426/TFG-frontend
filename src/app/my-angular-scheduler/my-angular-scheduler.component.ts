@@ -340,39 +340,43 @@ export class MyAngularSchedulerComponent implements OnInit{
 
   }
 
-  public onPopupClose(args: { type: string; data: { Patient: any, StartTime: Date, Id: number, EndTime: Date,
-      _id: number, Subject:string, id_psychologist:number,id_patient:number, CategoryColor:any, observations:string } }) {
+  public async onPopupClose(args: {
+    type: string; data: {
+      Patient: any, StartTime: Date, Id: number, EndTime: Date,
+      _id: number, Subject: string, id_psychologist: number, id_patient: number, CategoryColor: any, observations: string
+    }
+  }) {
 
     if (args.type === 'Editor' && args.data) {
-      if(this.openDialogSelectedId){
+      if (this.openDialogSelectedId) {
         let appointmentRecords = Object(this.eventSettings!.dataSource)
         let endTime = this.getTime('end')
         let startTime = this.getTime('start')
-        appointmentRecords[this.openDialogSelectedId-1].StartTime = startTime
-        appointmentRecords[this.openDialogSelectedId-1].EndTime = endTime
+        appointmentRecords[this.openDialogSelectedId - 1].StartTime = startTime
+        appointmentRecords[this.openDialogSelectedId - 1].EndTime = endTime
 
-        let psychologist = this.psychologistList.find(({_id})=>String(_id) == this.psychologistControl!.value)
-        let patient = this.patientsList.find(({_id})=>String(_id) == this.patientControl!.value)
+        let psychologist = this.psychologistList.find(({_id}) => String(_id) == this.psychologistControl!.value)
+        let patient = this.patientsList.find(({_id}) => String(_id) == this.patientControl!.value)
 
         args.data.CategoryColor = psychologist?.CategoryColor
-        args.data.Subject = patient!.name + " "+ patient!.surname
+        args.data.Subject = patient!.name + " " + patient!.surname
 
         const updatedAppointment: AppointmentInterface = {
-          Subject:args.data.Subject,
+          Subject: args.data.Subject,
           StartTime: startTime,
           EndTime: endTime,
           id_psychologist: this.psychologistControl!.value,
-          Observations:this.observationsControl.value!,
+          Observations: this.observationsControl.value!,
           id_patient: this.patientControl!.value,
           CategoryColor: psychologist!.CategoryColor
         }
 
-        this.appointmentService.modifyAppointment(updatedAppointment,appointmentRecords[this.openDialogSelectedId-1]._id)
+        this.appointmentService.modifyAppointment(updatedAppointment, appointmentRecords[this.openDialogSelectedId - 1]._id)
 
-        if(this.eventSettings?.dataSource instanceof Array){
-          for(let i = 0, a = this.eventSettings.dataSource; i < a.length;++i){
+        if (this.eventSettings?.dataSource instanceof Array) {
+          for (let i = 0, a = this.eventSettings.dataSource; i < a.length; ++i) {
             let event = a[i]
-            if(appointmentRecords[this.openDialogSelectedId-1]._id == event['_id']){
+            if (appointmentRecords[this.openDialogSelectedId - 1]._id == event['_id']) {
               event['Subject'] = args.data.Subject
               event['CategoryColor'] = psychologist!.CategoryColor
               event['id_psychologist'] = this.psychologistControl!.value
@@ -381,7 +385,7 @@ export class MyAngularSchedulerComponent implements OnInit{
             }
           }
         }
-      }else{
+      } else {
         args.data.Subject = this.displayPatient(this.patientControl.value)
 
         //Format hours so Syncfusion Angular Scheduler can display them
@@ -391,28 +395,29 @@ export class MyAngularSchedulerComponent implements OnInit{
         args.data.StartTime = startTime
         args.data.EndTime = endTime
 
-        let psychologist = this.psychologistList.find(({_id})=>String(_id) == this.psychologistControl!.value)
+        let psychologist = this.psychologistList.find(({_id}) => String(_id) == this.psychologistControl!.value)
 
         args.data.CategoryColor = psychologist?.CategoryColor
 
         const newAppointment: AppointmentInterface = {
-          Subject:args.data.Subject,
+          Subject: args.data.Subject,
           StartTime: args.data.StartTime,
           EndTime: args.data.EndTime,
           id_psychologist: this.psychologistControl!.value,
-          Observations:this.observationsControl.value!,
+          Observations: this.observationsControl.value!,
           id_patient: this.patientControl!.value,
           CategoryColor: psychologist!.CategoryColor
         }
 
 
-        this.appointmentService.postAppointment(newAppointment)
-        this.appointmentService.getAppointments().subscribe((response: any) => {
+        await this.appointmentService.postAppointment(newAppointment).subscribe((response)=>{
+          this.appointmentService.getAppointments().subscribe((response: any) => {
             let records: Record<string, any>[] = []
             response.forEach((appointment: any) => records.push(appointment));
             this.eventSettings = {dataSource: records}
           })
-        }
+        })
+      }
     }
 
   }
